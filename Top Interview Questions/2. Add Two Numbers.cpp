@@ -25,8 +25,8 @@ public:
     }
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
         
-        string s1 = solve(l1);
         string s2 = solve(l2);
+        string s1 = solve(l1)
         
         int n1 = s1.size(), n2 = s2.size();
         
