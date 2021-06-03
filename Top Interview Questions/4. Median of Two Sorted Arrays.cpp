@@ -172,7 +172,7 @@ public:
             }
         }
         
-        if((n1+n2)%2==0){
+        if((n1+n2) % 2==0){
             return (e1+e2)/2;
         }
         return e1;
