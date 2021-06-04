@@ -5,7 +5,6 @@ public:
     string longestPalindrome(string s) {
         
         int n = s.size();
-        
         vector<vector<bool>> dp(n,vector<bool>(n,false));
         
         for(int i = 0; i < n; i++){
