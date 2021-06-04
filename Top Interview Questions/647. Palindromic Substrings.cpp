@@ -8,7 +8,6 @@ public:
         int len = s.size();
         
         int dp[len][len];
-        
         memset(dp,0,sizeof(dp));
         
         int count = 0;
