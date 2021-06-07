@@ -1,8 +1,8 @@
-// In the worst case query qq has length mm and it is equal to all nn strings of the array.
-// Time complexity : preprocessing O(S)O(S), where SS is the number of all characters in the array, LCP query O(m)O(m).
-// Trie build has O(S)O(S) time complexity. To find the common prefix of qq in the Trie takes in the worst case O(m)O(m).
-// Space complexity : O(S)O(S). We only used additional SS extra space for the Trie.
-
+// In the worst case query q has length m and it is equal to all n strings of the array.
+// Time complexity : preprocessing O(S), where S is the number of all characters in the array, LCP query O(m).
+// Trie build has O(S) time complexity. To find the common prefix of q in the Trie takes in the worst case O(m).
+// Space complexity : O(S). We only used additional S extra space for the Trie.
+//Ref: https://www.youtube.com/watch?v=fhyIORFDD0k
 class Solution {
 public:
     struct TrieNode{
