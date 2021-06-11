@@ -2,6 +2,7 @@
 Runtime: 0 ms, faster than 100.00% of C++ online submissions for Combination Sum.
 Memory Usage: 10.7 MB, less than 84.38% of C++ online submissions for Combination Sum.
 */
+//Since all the elements are distinct so no need to use set
 class Solution {
 public:
     
