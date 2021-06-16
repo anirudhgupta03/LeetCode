@@ -67,3 +67,41 @@ public:
         return (rev.substr(0,rev.size()-mct) + str);
     }
 };
+
+//Method - 2
+// Runtime: 4 ms, faster than 79.18% of C++ online submissions for Shortest Palindrome.
+// Memory Usage: 8 MB, less than 22.58% of C++ online submissions for Shortest Palindrome.
+class Solution {
+public:
+    string shortestPalindrome(string s) {
+        
+        string rev = s;
+        reverse(rev.begin(),rev.end());
+        
+        string str = s + "#" + rev;
+        
+        int n = str.size();
+        
+        vector<int> lps(n,0);
+        
+        int l = 0, r = 1;
+        
+        while(r < n){
+            
+            if(str[l] == str[r]){
+                lps[r] = l + 1;
+                l++;
+                r++;
+            }
+            else if(l == 0){
+                r++;
+            }
+            else{
+                l = lps[l-1];
+            }
+        }
+        
+        return rev.substr(0,rev.size()-lps[n-1]) + s;
+        
+    }
+};
