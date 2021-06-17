@@ -1,5 +1,6 @@
 int findTargetSumWaysTopDown(vector<int>& nums, int S) {
-        int n = nums.size();
+        
+	int n = nums.size();
         int countOfZeroes = 0, sum = 0;
 
         for(auto &i:nums){
@@ -8,9 +9,10 @@ int findTargetSumWaysTopDown(vector<int>& nums, int S) {
         }
 
         /*
-		we cant divided our array to have S diff,
+	we cant divided our array to have S diff,
         if even the totoal sum is < S 
-		*/
+	*/
+	
         if(S > sum) return 0;
         if((S+sum)%2 != 0)  return 0;
 
