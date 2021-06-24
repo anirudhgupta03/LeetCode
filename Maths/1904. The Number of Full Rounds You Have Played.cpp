@@ -47,10 +47,10 @@ public:
                 
                 sh++;
                 
-                if(sh == 24){
-                    sh = 1;
-                }
-                count += (24 - sh)*4;
+                // if(sh == 24){
+                //     sh = 1;
+                // }
+                count += (24 + eh - sh)*4;
                 
                 count += (em)/15;
             }
