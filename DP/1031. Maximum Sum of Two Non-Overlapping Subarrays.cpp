@@ -113,3 +113,71 @@ public:
         return p.second;
     }
 };
+
+//Optimal Approach
+//Ref: https://www.youtube.com/watch?v=8e6U4O5VUx0
+class Solution {
+public:
+    int solve(int firstLen, int secondLen, int n, vector<int> &prefix, vector<int>& nums){
+        
+        vector<int> dp1(n,0), dp2(n,0);
+        
+        int sum1 = 0;
+        
+        for(int i = 0; i < firstLen; i++){
+            sum1 += nums[i];
+        }
+        
+        dp1[firstLen - 1] = sum1;
+        
+        for(int i = firstLen; i <= n - 1; i++){
+            dp1[i] = max(dp1[i-1], prefix[i+1] - prefix[i-firstLen + 1]);
+        }
+        
+        int sum2 = 0;
+        
+        for(int i = n - 1; i >= n - secondLen; i--){
+            sum2 += nums[i];
+        }
+        
+        dp2[n - secondLen] = sum2;
+        
+        for(int i = n - secondLen - 1; i >= 0; i--){
+            dp2[i] = max(dp2[i+1], prefix[i + secondLen] - prefix[i]);
+        }
+        
+        int maxsum = INT_MIN;
+        
+        for(int i = 0; i < n; i++){
+            cout << dp1[i] << " ";
+        }
+        cout << endl;
+        for(int i = 0; i < n; i++){
+            cout << dp2[i] << " ";
+        }
+        cout << endl;
+        for(int i = firstLen - 1; i <= n - secondLen - 1; i++){
+            maxsum = max(maxsum, dp1[i] + dp2[i+1]);
+        }
+        return maxsum;
+    }
+    int maxSumTwoNoOverlap(vector<int>& nums, int firstLen, int secondLen) {
+        
+        int n = nums.size();
+        
+        vector<int> prefix(n+1,0);
+        
+        for(int i = 1; i <= n; i++){
+            prefix[i] = prefix[i-1] + nums[i-1];
+        }
+        int maxsum = 0;
+        
+        maxsum = max(maxsum, solve(firstLen, secondLen, n, prefix, nums));
+        
+        swap(firstLen, secondLen);
+        
+        maxsum = max(maxsum, solve(firstLen, secondLen, n, prefix, nums));
+        
+        return maxsum;
+    }
+};
