@@ -1,11 +1,6 @@
+//Ref: https://www.youtube.com/watch?v=mXeT7-oZeQQ
 class Solution {
 public:
-    void print(vector<pair<int,int>> v){
-        
-        for(int i = 0; i < v.size(); i++){
-                cout << v[i].first << " " << v[i].second << endl;
-        }
-    }
     vector<int> maxSumOfThreeSubarrays(vector<int>& nums, int k) {
         
         int n = nums.size();
@@ -31,9 +26,7 @@ public:
             }
             
         }
-        
-        print(dp1);
-        
+       
         vector<pair<int,int>> dp2(n);
         
         int sum2 = 0;
@@ -64,7 +57,6 @@ public:
             }
         }
         vector<int> res = {p1,p2,p3};
-        cout << maxsum << endl;
         return res;
     }
 };
