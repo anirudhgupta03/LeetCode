@@ -1,3 +1,27 @@
+//Method - 1
+class Solution {
+public:
+    bool isSubsequence(string s, string t) {
+        
+        if(s == ""){
+            return true;
+        }
+        int ind = 0;
+        
+        for(int i = 0; i < t.size(); i++){
+            
+            if(s[ind] == t[i]){
+                ind++;
+            }
+            if(ind == s.size()){
+                return true;
+            }
+        }
+        return false;
+    }
+};
+
+//Method - 2
 class Solution {
 public:
     bool isSubsequence(string s, string t) {
