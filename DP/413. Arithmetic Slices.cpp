@@ -1,3 +1,4 @@
+//Ref: https://www.youtube.com/watch?v=rSi4MpGEz1M
 class Solution {
 public:
     int numberOfArithmeticSlices(vector<int>& nums) {
