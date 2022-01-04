@@ -55,3 +55,43 @@ public:
         return ans;
     }
 };
+
+//Alternate
+class Solution {
+public:
+    /**
+     * @param A: a list of integer
+     * @param B: an integer
+     * @return: return a list of integer
+     */
+    vector<int> cheapestJump(vector<int> &A, int B) {
+        const int INF = 1e9+10;
+        int n = A.size();
+        vector <int> arr[n];
+        vector<int> dp(n, INF);
+        arr[0] = {1};
+        dp[0] = A[0];
+
+        for(int i=0; i<n; i++){
+            if(dp[i] == INF)   continue;
+            for(int j=1; j<=B; j++){
+                if(i+j>=n || A[i+j] == -1)   continue;
+                if( (dp[i]+A[i+j]) <= dp[i+j]) {
+                    if(dp[i+j] == INF || (dp[i]+A[i+j]) < dp[i+j]){
+                        arr[i+j] = arr[i];
+                        arr[i+j].push_back(i+j+1);
+                    }
+                    else{
+                        vector <int> temp = arr[i];
+                        temp.push_back(i+j+1);
+                        if(temp < arr[i+j]){
+                            arr[i+j] = temp;
+                        }
+                    }
+                    dp[i+j] = dp[i] + A[i+j];
+                }   
+            }
+        }
+        return arr[n-1];
+    }
+};
