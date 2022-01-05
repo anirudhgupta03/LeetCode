@@ -66,3 +66,59 @@ public:
  * TopVotedCandidate* obj = new TopVotedCandidate(persons, times);
  * int param_1 = obj->q(t);
  */
+
+//Alternate
+//Better
+//Ref: https://www.youtube.com/watch?v=ZnCenznoDTE
+class TopVotedCandidate {
+public:
+    vector<int> v;
+    vector<int> ttime;
+    TopVotedCandidate(vector<int>& persons, vector<int>& times) {
+        
+        unordered_map<int,int> mp;    //<person,<votes,lastvotetime>>
+        int n = persons.size();
+        
+        v.clear();
+        v.resize(n);
+        
+        ttime = times;
+        
+        v[0] = persons[0];
+        int lead = persons[0];
+        mp[persons[0]]++;
+        
+        for(int i = 1; i < n; i++){
+            mp[persons[i]]++;
+            if(mp[persons[i]] >= mp[lead]){
+                lead = persons[i];
+            }
+            v[i] = lead;
+        }
+        
+    }
+    
+    int q(int t) {
+        
+        int lo = 0, hi = ttime.size() - 1;
+        int ans;
+        while(lo <= hi){
+            int mid = (lo + hi)/2;
+            if(ttime[mid] <= t){
+                ans = mid;
+                lo = mid + 1;
+            }
+            else{
+                hi = mid - 1;
+            }
+        }
+        
+        return v[ans];
+    }
+};
+
+/**
+ * Your TopVotedCandidate object will be instantiated and called as such:
+ * TopVotedCandidate* obj = new TopVotedCandidate(persons, times);
+ * int param_1 = obj->q(t);
+ */
