@@ -1,3 +1,4 @@
+//Ref: https://www.youtube.com/watch?v=Wdh4negJaq0
 class Solution {
 public:
     bool isPossible(int products, int n, vector<int> &quantities){
