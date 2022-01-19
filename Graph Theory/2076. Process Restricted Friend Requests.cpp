@@ -101,16 +101,19 @@ public:
             }
             else{
                 int temp1 = par[parv], temp2 = par[paru];
-                bool flag1 = false, flag2 = false;
-                if(rank[paru] >= rank[parv]){
-                    rank[paru] += rank[parv];
+                bool flag1 = false, flag2 = false, flag3 = false;
+                if(rank[paru] > rank[parv]){
                     par[parv] = paru;
                     flag1 = true;
                 }
-                else{
-                    flag2 = true;
-                    rank[parv] += rank[paru];
+                else if(rank[paru] < rank[parv]){
                     par[paru] = parv;
+                    flag2 = true;
+                }
+                else{
+                    par[parv] = paru;
+                    rank[paru]++;
+                    flag3 = true;
                 }
                 
                 bool flag = true;
@@ -129,11 +132,13 @@ public:
                 if(!flag){
                     if(flag1){
                         par[parv] = temp1;
-                        rank[paru] -= rank[parv];
+                    }
+                    else if(flag2){
+                        par[paru] = temp2;
                     }
                     else{
-                        par[paru] = temp2;
-                        rank[parv] -= rank[paru];
+                        par[parv] = temp1;
+                        rank[paru]--;
                     }
                 }
                 res.push_back(flag);
