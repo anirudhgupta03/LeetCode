@@ -41,7 +41,7 @@ public:
             if(curr -> right) q.push({curr -> right, level + 1});
         }
         
-        for(auto x: mp){
+        for(auto &x: mp){
             res.push_back(x.second);
         }
         return res;
