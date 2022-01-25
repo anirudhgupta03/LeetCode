@@ -28,35 +28,38 @@ public:
             insert(root, dictionary[i]);
         }
     }
-    void solve(int ind, TrieNode* root, string s, int count, bool &flag){
+    bool solve(int ind, TrieNode* root, string s, int count){
         
         if(ind == s.size() && root -> end && count == 1){
-            flag = true;
-            return;
+            return true;
         }
         if(ind == s.size() || root == NULL){
-            return;
+            return false;
         }
         if(root -> child[s[ind] - 'a'] == NULL){
             if(count == 1){
-                return;
+                return false;
             }
         }
         for(int i = 0; i < 26; i++){
             if(root -> child[i] != NULL && i != (s[ind] - 'a')){
-                solve(ind + 1, root -> child[i], s, count + 1, flag);
+                bool flag = solve(ind + 1, root -> child[i], s, count + 1);
+                if(flag){
+                    return true;
+                }
             }
             else if((i == s[ind] - 'a') && root -> child[s[ind] - 'a'] != NULL){
-                solve(ind + 1, root -> child[s[ind] - 'a'], s, count, flag);
+                bool flag = solve(ind + 1, root -> child[s[ind] - 'a'], s, count);
+                if(flag){
+                    return true;
+                }
             }
         }
+        return false;
     }
     bool search(string searchWord) {
-        
-        bool flag = false;
         int count = 0;
-        solve(0, root, searchWord, count, flag);
-        return flag;
+        return solve(0, root, searchWord, count);
     }
 };
 
