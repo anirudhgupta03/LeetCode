@@ -78,3 +78,57 @@ public:
     return dist[dst];
     }
 };
+
+//BFS
+class Solution {
+public:
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+        
+        unordered_map<string, int> words;
+        
+        for(string s: wordList){
+            words[s]++;
+        }
+        
+        if(words[endWord] == 0){
+            return 0;
+        } 
+        
+        int steps = 1;
+        queue<string> q;
+        q.push(beginWord);
+        
+        unordered_set<string> vis;
+        
+        while(!q.empty()){
+            int sz = q.size();
+            while(sz--){
+                string curr = q.front();
+                q.pop();
+                
+                if(curr == endWord){
+                    return steps;
+                }
+                
+                if(vis.find(curr) != vis.end()){
+                    continue;
+                }
+                vis.insert(curr);
+                
+                for(int i = 0; i < curr.size(); i++){
+                    char ch = curr[i];
+                    for(int j = 0; j < 26; j++){
+                        if(j == ch - 'a') continue;
+                        curr[i] = j + 'a';
+                        if(vis.find(curr) == vis.end() && words[curr]){
+                            q.push(curr);
+                        }
+                        curr[i] = ch;
+                    }
+                }
+            }
+            steps++;
+        }
+        return 0;
+    }
+};
