@@ -1,3 +1,4 @@
+//Ref: https://www.youtube.com/watch?v=rWsv46ME6lI
 class Solution {
 public:
     int scoreOfParentheses(string s) {
