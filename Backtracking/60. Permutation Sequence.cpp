@@ -1,3 +1,4 @@
+//Method - 1
 class Solution {
 public:
     int fact(int n){
@@ -43,5 +44,46 @@ public:
         }
         ans += s[0];
         return ans;
+    }
+};
+
+//Method - 2
+class Solution {
+public:
+    string getPermutation(int A, int B) {
+        if(A == 1){
+            return "1";
+        }
+
+        int fact = 1;
+
+        for(int i = 1; i <= A - 1; i++){
+            fact *= i;
+        }
+
+        vector<int> v(A);
+        for(int i = 0; i < A; i++){
+            v[i] = i + 1;
+        }
+
+        string res;
+        int i = A - 1;
+
+        while(B){
+            int temp = B/fact;
+            if(B % fact == 0){
+                temp--;
+            }
+            res += to_string(v[temp]);
+
+            v.erase(v.begin() + temp);
+            B %= fact;
+            fact /= i;
+            i--;
+        }
+        for(int i = v.size() - 1; i >= 0; i--){
+            res += to_string(v[i]);
+        }
+        return res;
     }
 };
