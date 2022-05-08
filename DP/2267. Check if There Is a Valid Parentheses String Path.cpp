@@ -22,11 +22,11 @@ public:
             int xo = x + dx[i], yo = y + dy[i];
             if(xo < m && yo < n){
                 if(grid[xo][yo] == '('){
-                    bool flag = solve(xo, yo, m, n, grid, bal + 1);
+                    int flag = solve(xo, yo, m, n, grid, bal + 1);
                     if(flag) return dp[x][y][bal] = 1;
                 }
                 else{
-                    bool flag = solve(xo, yo, m, n, grid, bal - 1);
+                    int flag = solve(xo, yo, m, n, grid, bal - 1);
                     if(flag) return dp[x][y][bal] = 1;
                 }
             }
