@@ -1,3 +1,5 @@
+//Method - 1
+//Using Binary Search
 class Solution {
 public:
     int dx[4] = {-1,1,0,0};
@@ -42,5 +44,50 @@ public:
             }
         }
         return ans;
+    }
+};
+
+//Method - 2
+//Using Dijkstra's Algorithm
+class Solution {
+public:
+    #define pipii pair<int,pair<int,int>> 
+    int dx[4] = {-1,1,0,0};
+    int dy[4] = {0,0,-1,1};
+    struct cmp{
+      bool operator()(pipii &p1, pipii &p2){
+          return p1.first > p2.first;
+      }  
+    };
+    int minimumEffortPath(vector<vector<int>>& heights) {
+        
+        int m = heights.size(), n = heights[0].size();
+        
+        priority_queue<pipii, vector<pipii>, cmp> pq;
+        
+        pq.push({0,{0,0}});
+        
+        vector<vector<int>> vis(m, vector<int>(n, 0));
+        
+        while(!pq.empty()){
+            
+            int x = pq.top().second.first, y = pq.top().second.second, effort = pq.top().first;
+            pq.pop();
+            
+            if(x == m - 1 && y == n - 1) return effort;
+            
+            if(vis[x][y]) continue;
+            
+            vis[x][y] = 1;
+            
+            for(int i = 0; i < 4; i++){
+                int xo = x + dx[i], yo = y + dy[i];
+                
+                if(xo >= 0 && yo >= 0 && xo < m && yo < n && vis[xo][yo] == 0){
+                    pq.push({max(effort, abs(heights[xo][yo] - heights[x][y])), {xo,yo}});
+                }
+            }
+        }
+        return 0;
     }
 };
