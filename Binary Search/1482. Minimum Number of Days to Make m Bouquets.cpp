@@ -1,4 +1,5 @@
 //Excellent Question
+//Method - 1
 class Solution {
 public:
     
@@ -55,6 +56,8 @@ public:
     }
 };
 
+//Method - 2
+//Optimal Method 
 class Solution {
 public:
     #define ll long long
