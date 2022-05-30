@@ -24,7 +24,7 @@ public:
         
         sort(position.begin(),position.end());
         
-        int lo = 1, hi = position[n - 1];
+        int lo = 1, hi = position[n - 1] - position[0];
         
         int ans;
         
