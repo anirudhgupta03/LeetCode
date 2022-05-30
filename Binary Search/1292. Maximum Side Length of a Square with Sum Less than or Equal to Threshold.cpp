@@ -118,3 +118,52 @@ public:
         return best;
     }
 };
+
+//Method - 3
+class Solution {
+public:
+    bool isPossible(int len, vector<vector<int>> &mat, int threshold, vector<vector<int>> &sum){
+        int m = mat.size(), n = mat[0].size();
+        for(int i = 0; i <= m - len; i++){
+            for(int j = len - 1; j < n; j++){
+                if(sum[i + len][j + 1] - sum[i + len][j - len + 1] - (sum[i][j + 1] - sum[i][j - len + 1]) <= threshold){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    int maxSideLength(vector<vector<int>>& mat, int threshold) {
+        
+        int m = mat.size(), n = mat[0].size();
+        
+        int lo = 1, hi = min(m, n);
+        
+        vector<vector<int>> sum(m + 1, vector<int>(n + 1, 0));
+        
+        for(int j = 1; j <= n; j++){
+            for(int i = 1; i <= m; i++){
+                sum[i][j] = mat[i - 1][j - 1] + sum[i - 1][j];
+            }
+        }
+        
+        for(int i = 1; i <= m; i++){
+            for(int j = 1; j <= n; j++){
+                sum[i][j] += sum[i][j - 1];
+            }
+        }
+        
+        int ans = 0;
+        while(lo <= hi){
+            int mid = (lo + hi)/2;
+            if(isPossible(mid, mat, threshold, sum)){
+                ans = mid;
+                lo = mid + 1;
+            }
+            else{
+                hi = mid - 1;
+            }
+        }
+        return ans;
+    }
+};
