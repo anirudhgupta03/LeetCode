@@ -12,18 +12,13 @@ public:
     int minEatingSpeed(vector<int>& piles, int h) {
         
         int lo = 1, hi = INT_MIN;
-        ll bananas = 0;
         
         for(int i = 0; i < piles.size(); i++){
-            lo = min(lo,piles[i]);
             hi = max(hi,piles[i]);
-            bananas += piles[i];
         }
         int ans;
         while(lo <=  hi){
-            
             int mid = (lo + hi)/2;
-            
             if(timeTaken(mid,piles) <= h){
                 ans = mid;
                 hi = mid - 1;
@@ -32,7 +27,6 @@ public:
                 lo = mid + 1;
             }
         }
-        
         return ans;
     }
 };
