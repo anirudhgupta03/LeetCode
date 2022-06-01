@@ -1,4 +1,72 @@
 //https://www.goodtecher.com/leetcode-1182-shortest-distance-to-target-color/
+//Method - 1
+#include <bits/stdc++.h>
+using namespace std;
+
+#define ll long long
+#define mod 1000000007
+
+void shortestDistanceToTargetColor(vector<int> &colors, vector<vector<int>> &queries){
+    
+    map<int, vector<int>> mp;
+    
+    for(int i = 0; i < colors.size(); i++){
+        mp[colors[i]].push_back(i);
+    }
+    
+    for(int i = 0; i < queries.size(); i++){
+        int ind = queries[i][0], target = queries[i][1];
+        vector<int> v = mp[target];
+        
+        if(v.size() == 0){
+            cout << -1 << " ";
+            continue;
+        }
+        int lo = 0, hi = v.size() - 1, ans = INT_MAX;
+        
+        while(lo <= hi){
+            
+            int mid = (lo + hi)/2;
+            
+            ans = min(ans, abs(ind - v[mid]));
+            
+            if(v[mid] < ind){
+                lo = mid + 1;
+            }
+            else{
+                hi = mid - 1;
+            }
+        }
+        cout << ans << " ";
+    }
+    cout << endl;
+}
+int main() {
+    
+    int n;
+    cin >> n;
+    
+    vector<int> colors(n);
+    
+    for(int i = 0; i < n; i++){
+        cin >> colors[i];
+    }
+    
+    int q;
+    cin >> q;
+    
+    vector<vector<int>> queries(q, vector<int>(2));
+    
+    for(int i = 0; i < q; i++){
+        cin >> queries[i][0] >> queries[i][1];
+    }
+    
+    shortestDistanceToTargetColor(colors, queries);
+    
+	return 0;
+}
+
+//Method - 2
 #include <bits/stdc++.h>
 using namespace std;
 
