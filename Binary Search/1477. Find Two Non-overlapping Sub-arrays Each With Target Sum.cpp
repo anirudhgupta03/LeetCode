@@ -1,3 +1,4 @@
+//Method - 1
 class Solution {
 public:
     int minSumOfLengths(vector<int>& arr, int target) {
@@ -77,5 +78,65 @@ public:
             return -1;
         }
         return ans;
+    }
+};
+
+//Method - 2
+class Solution {
+public:
+    int minSumOfLengths(vector<int>& arr, int k) {
+        
+        unordered_map<int,int> umap;
+        
+        umap[0] = -1;
+        
+        int n = arr.size(), sum = 0;
+        
+        vector<int> prefix(n,INT_MAX);
+        
+        for(int i = 0; i < n; i++){
+            
+            sum += arr[i];
+            
+            if(umap.find(sum - k) != umap.end()){
+                prefix[i] = i - umap[sum - k];
+            }
+            
+            umap[sum] = i;
+        }
+        
+        umap.clear();
+        sum = 0;
+        umap[0] = n;
+        
+        vector<int> suffix(n,INT_MAX);
+        
+        for(int i = n - 1; i >= 0; i--){
+            
+            sum += arr[i];
+            
+            if(umap.find(sum - k) != umap.end()){
+                suffix[i] = umap[sum - k] - i;
+            }
+            umap[sum] = i;
+        }
+        
+        for(int i = 1; i < n; i++){
+            prefix[i] = min(prefix[i - 1], prefix[i]);
+        }
+        for(int i = n - 2; i >= 0; i--){
+            suffix[i] = min(suffix[i + 1], suffix[i]);
+        }
+        
+        
+        int minLen = INT_MAX;
+        
+        for(int i = 0; i < n - 1; i++){
+            if(prefix[i] != INT_MAX && suffix[i + 1] != INT_MAX){
+                minLen = min(minLen, prefix[i] + suffix[i + 1]);
+            }
+        }
+        if(minLen == INT_MAX) return -1;
+        return minLen;
     }
 };
