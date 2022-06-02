@@ -1,3 +1,4 @@
+//Method - 1
 class Solution {
 public:
     vector<int> platesBetweenCandles(string s, vector<vector<int>>& queries) {
@@ -78,6 +79,64 @@ public:
             
             if(leftcandle < rightcandle && leftcandle != -1 && rightcandle != -1){
                 res[i] = temp[rightcandle] - temp[leftcandle];
+            }
+        }
+        return res;
+    }
+};
+
+//Method - 2
+//Ref: https://www.youtube.com/watch?v=G0Sy71_lBAw
+class Solution {
+public:
+    vector<int> platesBetweenCandles(string s, vector<vector<int>>& queries) {
+        
+        int n = s.size();
+        
+        vector<int> prefix(n + 1, 0);
+        
+        for(int i = 1; i <= n; i++){
+            if(s[i - 1] == '*'){
+                prefix[i] = prefix[i - 1] + 1;
+            }
+            else{
+                prefix[i] = prefix[i - 1];
+            }
+        }
+        
+        vector<int> nearestCandleToLeft(n), nearestCandleToRight(n);
+        
+        int ind = -1;
+        
+        for(int i = 0; i < n; i++){
+            if(s[i] == '|'){
+                ind = i;
+            }
+            nearestCandleToLeft[i] = ind;
+        }
+        
+        ind = -1;
+        
+        for(int i = n - 1; i >= 0; i--){
+            if(s[i] == '|'){
+                ind = i;
+            }
+            nearestCandleToRight[i] = ind;
+        }
+        vector<int> res(queries.size());
+        
+        for(int i = 0; i < queries.size(); i++){
+            
+            int s = queries[i][0], e = queries[i][1];
+            
+            int r = nearestCandleToRight[s];
+            int l = nearestCandleToLeft[e];
+            
+            if(l != -1 && r != -1 && l >= r && l <= e && r >= s){
+                res[i] = prefix[l + 1] - prefix[r];
+            }
+            else{
+                res[i] = 0;
             }
         }
         return res;
