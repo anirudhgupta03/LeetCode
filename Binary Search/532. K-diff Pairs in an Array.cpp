@@ -1,3 +1,35 @@
+//Method - 1
+//TC - O(N)
+//SC - O(N)
+class Solution {
+public:
+    int findPairs(vector<int>& nums, int k) {
+        
+        unordered_map<int, int> umap;
+        
+        for(int x: nums){
+            umap[x]++;
+        }
+        
+        int count = 0;
+        
+        for(auto x: umap){
+            if(k == 0){
+                if(x.second > 1) count++;
+            }
+            else{
+                if(umap.find(x.first + k) != umap.end()){
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+};
+
+//Method - 2
+//TC - O(NlogN)
+//SC - O(1)
 class Solution {
 public:
     int findPairs(vector<int>& nums, int k) {
