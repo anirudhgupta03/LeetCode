@@ -1,3 +1,4 @@
+//Method - 1
 class Solution {
 public:
     int countOfElementsLessThanOrEqualToMid(int ele, vector<vector<int>> &matrix){
@@ -17,6 +18,56 @@ public:
                 }
             }
             count += ans + 1;
+        }
+        return count;
+    }
+    int kthSmallest(vector<vector<int>>& matrix, int k) {
+        
+        int n = matrix.size();
+        
+        int lo = INT_MAX, hi = INT_MIN;
+        
+        for(int i = 0; i < n; i++){
+            lo = min(lo, matrix[i][0]);
+            hi = max(hi, matrix[i][n - 1]);
+        }
+        
+        int ans;
+        
+        while(lo <= hi){
+            int mid = lo + (hi - lo)/2;
+            
+            if(countOfElementsLessThanOrEqualToMid(mid, matrix) >= k){
+                ans = mid;
+                hi = mid - 1;
+            }
+            else{
+                lo = mid + 1;
+            }
+        }
+        return ans;
+    }
+};
+
+//Method - 2
+//Optimal Approach
+//Ref: https://www.youtube.com/watch?v=G5wLN4UweAM
+class Solution {
+public:
+    int countOfElementsLessThanOrEqualToMid(int ele, vector<vector<int>> &matrix){
+        
+        int count = 0;
+        
+        int i = 0, j = matrix.size() - 1;
+        
+        while(i < matrix.size() && j >= 0){
+            if(matrix[i][j] <= ele){
+                count += j + 1;
+                i++;
+            }
+            else{
+                j--;
+            }
         }
         return count;
     }
