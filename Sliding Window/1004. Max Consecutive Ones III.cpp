@@ -33,3 +33,31 @@ public:
         return maxlen;
     }
 };
+
+//Method - 2
+class Solution {
+public:
+    int longestOnes(vector<int>& nums, int k) {
+        
+        int maxLen = 0;
+        
+        int lo = 0, hi = 0;
+        
+        while(hi < nums.size()){
+            
+            if(nums[hi] == 0){
+                k--;
+                if(k < 0){
+                    while(lo < hi && nums[lo] == 1){
+                        lo++;
+                    }
+                    lo++;
+                    k++;
+                }
+            }
+            hi++;
+            maxLen = max(maxLen, hi - lo);
+        }
+        return maxLen;
+    }
+};
