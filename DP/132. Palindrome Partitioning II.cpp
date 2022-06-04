@@ -1,3 +1,43 @@
+//Method - 1
+class Solution {
+public:
+    bool isPalindrome(string &s){
+        int lo = 0, hi = s.size() - 1;
+        while(lo < hi){
+            if(s[lo] != s[hi]) return false;
+            lo++;
+            hi--;
+        }
+        return true;
+    }
+    int solve(int ind, string &s, vector<int> &dp){
+        
+        if(ind == s.size()){
+            return -1;
+        }
+        if(dp[ind] != -1){
+            return dp[ind];
+        }
+        int minCut = INT_MAX;
+        string temp;
+        for(int i = ind; i < s.size(); i++){
+            temp.push_back(s[i]);
+            if(isPalindrome(temp)){
+                minCut = min(minCut, 1 + solve(i + 1, s, dp));
+            }
+        }
+        return dp[ind] = minCut;
+    }
+    int minCut(string s) {
+        
+        vector<int> dp(s.size(), - 1);
+        
+        return solve(0, s, dp);
+    }
+};
+
+//Method - 2
+//Optimal Approach
 class Solution {
 public:
     int dp[2001];
