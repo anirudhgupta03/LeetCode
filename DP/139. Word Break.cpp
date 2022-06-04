@@ -1,3 +1,4 @@
+//Method - 1
 class Solution {
 public:
     bool wordBreak(string s, vector<string>& wordDict) {
@@ -26,5 +27,34 @@ public:
             }
         }
         return dp[n-1];
+    }
+};
+
+//Method - 2
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        
+        unordered_map<string,int> umap;
+        
+        for(auto &x: wordDict){
+            umap[x]++;
+        }
+        
+        int n = s.size();
+        bool dp[n];
+        memset(dp,false,sizeof(dp));
+        
+        for(int i = 0; i < n; i++){
+            for(int j = i; j >= 0; j--){
+                if(umap[s.substr(j, i - j + 1)]){
+                    if(j == 0 || dp[j - 1]){
+                        dp[i] = true;
+                        break;
+                    }
+                }
+            }
+        }
+        return dp[n - 1];
     }
 };
