@@ -1,3 +1,4 @@
+//Method - 1
 //Top-Down Approach
 class Solution {
 public:
@@ -43,6 +44,47 @@ public:
     }
 };
 
+//Method - 2
+//Visited Array is not required
+class Solution {
+public:
+    int dx[2] = {1,0};
+    int dy[2] = {0,1};
+    int solve(int x, int y, int m, int n, vector<vector<int>> &obstacleGrid, vector<vector<int>> &dp){
+        
+        if(x == m - 1 && y == n - 1){
+            return dp[x][y] = 1;
+        }
+        
+        if(dp[x][y] != -1){
+            return dp[x][y];
+        }
+        
+        int count = 0;
+        for(int i = 0; i < 2; i++){
+            int xo = x + dx[i], yo = y + dy[i];
+            if(xo < m && yo < n && obstacleGrid[xo][yo] == 0){
+                count += solve(xo, yo, m, n, obstacleGrid, dp);
+            }
+        }
+        return dp[x][y] = count;
+    }
+    int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+        
+        int m = obstacleGrid.size(), n = obstacleGrid[0].size();
+        
+        if(obstacleGrid[0][0] == 1 || obstacleGrid[m - 1][n - 1] == 1){
+            return 0;
+        }
+        int count = 0;
+        
+        vector<vector<int>> dp(m, vector<int>(n, -1));
+        
+        return solve(0, 0, m, n, obstacleGrid, dp);
+    }
+};
+
+//Method - 3
 //Bottom-Up Approach
 //Ref: https://www.youtube.com/watch?v=z6kelCB0ww4
 class Solution {
