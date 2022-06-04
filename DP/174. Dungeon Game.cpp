@@ -1,3 +1,4 @@
+//Method - 1
 class Solution {
 public:
     int dx[2] = {1,0};
@@ -59,5 +60,54 @@ public:
         else{
             return max(temp - dungeon[0][0],1);
         }
+    }
+};
+
+//Method - 2
+//Optimal Method
+class Solution {
+public:
+    int dx[2] = {0,1};
+    int dy[2] = {1,0};
+    
+    int solve(int x, int y, int m, int n, vector<vector<int>> &dp, vector<vector<int>> &dungeon){
+        
+        if(x == m - 1 && y == n - 1){
+            if(dungeon[x][y] < 0){
+                return dp[x][y] = 1 - dungeon[x][y];
+            }
+            else{
+                return dp[x][y] = 1;
+            }
+        }
+        
+        if(dp[x][y] != -1){
+            return dp[x][y];
+        }
+        
+        int ans = INT_MAX;
+        
+        for(int i = 0; i < 2; i++){
+            int xo = x + dx[i], yo = y + dy[i];
+            if(xo < m && yo < n){
+                int temp = solve(xo, yo, m, n, dp, dungeon);
+                if(dungeon[x][y] >= 0){
+                    temp = max(1, temp - dungeon[x][y]);
+                }
+                else{
+                    temp -= dungeon[x][y];
+                }
+                ans = min(ans, temp);
+            }
+        }
+        return dp[x][y] = ans;
+    }
+    int calculateMinimumHP(vector<vector<int>>& dungeon) {
+        
+        int m = dungeon.size(), n = dungeon[0].size();
+        
+        vector<vector<int>> dp(m, vector<int>(n, - 1));
+        
+        return solve(0, 0, m, n, dp, dungeon);
     }
 };
