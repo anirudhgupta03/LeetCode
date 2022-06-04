@@ -1,3 +1,4 @@
+//Method - 1
 class Solution {
 public:
     bool canJump(vector<int>& nums) {
@@ -31,5 +32,25 @@ public:
 
         }
         return dp[n-1];
+    }
+};
+
+//Method - 2
+class Solution {
+public:
+    bool canJump(vector<int>& nums) {
+        
+        int range = 0;
+        
+        for(int i = 0; i < nums.size(); i++){
+            
+            if(i <= range){
+                range = max(range, i + nums[i]);
+            }
+            else{
+                return false;
+            }
+        }
+        return true;
     }
 };
