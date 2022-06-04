@@ -1,3 +1,4 @@
+//Method - 1
 class Solution {
 public:
     int minimumTotal(vector<vector<int>>& triangle) {
@@ -22,5 +23,28 @@ public:
             minSum = min(minSum, triangle[rows - 1][j]);
         }
         return minSum;
+    }
+};
+
+//Method - 2
+class Solution {
+public:
+    int minimumTotal(vector<vector<int>>& triangle) {
+        
+        int n = triangle.size();
+        
+        vector<int> v(n);
+        
+        for(int j = 0; j < n; j++){
+            v[j] = triangle[n - 1][j];
+        }
+        
+        for(int i = n - 2; i >= 0; i--){
+            for(int j = 0; j <= i; j++){
+                v[j] = min(v[j], v[j + 1]) + triangle[i][j];
+            }
+        }
+        
+        return v[0];
     }
 };
