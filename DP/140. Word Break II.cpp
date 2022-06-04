@@ -1,3 +1,4 @@
+//Method - 1
 class Solution {
 public:
     vector<string> wordBreak(string s, vector<string>& wordDict) {
@@ -44,5 +45,41 @@ public:
         }
         
         return ans;
+    }
+};
+
+//Method - 2
+class Solution {
+public:
+    vector<string> wordBreak(string s, vector<string>& wordDict) {
+        
+        unordered_set<string> us;
+        
+        for(auto &x: wordDict){
+            us.insert(x);
+        }
+        
+        int n = s.size();
+        
+        vector<string> dp[n];
+        
+        for(int i = 0; i < n; i++){
+            for(int j = i; j >= 0; j--){
+                string temp = s.substr(j, i - j + 1);
+                if(us.find(temp) != us.end()){
+                    
+                    if(j == 0){
+                        dp[i].push_back(temp);
+                    }
+                    else if(dp[j - 1].size() != 0){
+                        for(int k = 0; k < dp[j - 1].size(); k++){
+                            dp[i].push_back(dp[j - 1][k] + " " + temp);
+                        }
+                    }
+                }
+            }
+        }
+        
+        return dp[n - 1];
     }
 };
