@@ -32,45 +32,36 @@ public:
 //Method - 2
 class Solution {
 public:
-    #define pipii pair<int,pair<int,int>>
     #define ll long long
     struct cmp{
-        bool operator()(pipii p1, pipii p2){
-            return p1.second.second > p2.second.second;
-        }
+      bool operator()(vector<ll> &v1, vector<ll> &v2){
+          return v1[2] > v2[2];
+      }  
     };
     int nthSuperUglyNumber(int n, vector<int>& primes) {
         
-        int dp[n];
-        dp[0] = 1;
+        int dp[n + 1];
         
-        priority_queue<pipii, vector<pipii>, cmp> pq;
+        priority_queue<vector<ll>, vector<vector<ll>>, cmp> pq;
         
         for(int i = 0; i < primes.size(); i++){
-            pq.push({primes[i],{0,primes[i]}});
+            pq.push({primes[i], 1, primes[i]});
         }
-        int ind = 1;
         
-        while(ind != n){
-            
-            pipii p = pq.top();
+        dp[1] = 1;
+        int i = 2;
+        
+        while(i <= n){
+            ll ele = pq.top()[0], ptr = pq.top()[1], val = pq.top()[2];
             pq.pop();
             
-            ll ele = p.first;
-            ll ptr = p.second.first;
-            ll val = p.second.second;
-            
-            if(val != dp[ind - 1]){
-                dp[ind] = val;
-                ind++;
+            if(val != dp[i - 1]){
+                dp[i] = val;
+                i++;
             }
-            
             ptr++;
-            val = ele*dp[ptr];
-            
-            pipii temp = {ele,{ptr,val}};
-            pq.push(temp);
+            pq.push({ele, ptr, ele*dp[ptr]});
         }
-        return dp[n-1];
+        return dp[n];
     }
 };
