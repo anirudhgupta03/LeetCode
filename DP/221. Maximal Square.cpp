@@ -4,7 +4,7 @@ public:
         
         int m = matrix.size(), n = matrix[0].size();
         
-        vector<vector<int>> dp(m, vector<int>(n));
+        vector<vector<int>> dp(m, vector<int>(n,0));
         
         int side = 0;
         
