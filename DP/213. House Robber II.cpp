@@ -1,3 +1,66 @@
+//Method - 1
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        
+        int n = nums.size();
+        
+        if(n == 1) return nums[0];
+        if(n == 2) return max(nums[0], nums[1]);
+        
+        for(int i = 0; i < n; i++){
+            nums.push_back(nums[i]);
+        }
+        
+        int ans = 0;
+        
+        for(int p = 0; p < n; p++){
+            
+            vector<int> v;
+            for(int j = p; j < p + n; j++){
+                v.push_back(nums[j]);
+            }
+            vector<pair<int,int>> dp(n);
+        
+            dp[0] = {0, v[0]};
+
+            if(v[1] >= v[0]){
+                dp[1] = {1, v[1]};
+            }
+            else{
+                dp[1] = {0, v[0]};
+            }
+
+            for(int i = 2; i < n - 1; i++){
+                if(v[i] + dp[i - 2].second > dp[i - 1].second){
+                    dp[i] = {dp[i - 2].first, v[i] + dp[i - 2].second};
+                }
+                else if(v[i] + dp[i - 2].second == dp[i - 1].second){
+                    if(dp[i - 1].first || dp[i - 2].first){
+                        dp[i] = {1, dp[i - 1].second};
+                    }
+                    else{
+                        dp[i] = {0, dp[i - 1].second};
+                    }
+                }
+                else{
+                    dp[i] = dp[i - 1];
+                }
+            }
+
+            dp[n - 1] = dp[n - 2];
+
+            if(dp[n - 3].second + v[n - 1] > dp[n - 1].second && dp[n - 3].first == 1){
+                dp[n - 1] = {1, dp[n - 3].second + v[n - 1]};
+            }
+            
+            ans = max({ans, nums[n - 1], dp[n - 1].second});
+        }
+        return ans;
+    }
+};
+
+//Method - 2
 //Nice Question
 class Solution {
 public:
@@ -103,5 +166,34 @@ public:
         
         res = max(res, dp[0].first);
         return res;
+    }
+};
+
+//Method - 3
+//Optimal Method
+//Ref: https://www.youtube.com/watch?v=3WaxQMELSkw
+class Solution {
+public:
+    int solve(int lo, int hi, vector<int> &nums){
+        
+        int val1 = nums[lo];
+        int val2 = max(nums[lo], nums[lo + 1]);
+        
+        for(int i = lo + 2; i <= hi; i++){
+            int val3 = max(val1 + nums[i], val2);
+            val1 = val2;
+            val2 = val3;
+        }
+        return val2;
+    }
+    int rob(vector<int>& nums) {
+        
+        int n = nums.size();
+        if(n == 1) return nums[0];
+        if(n == 2) return max(nums[0], nums[1]);
+        
+        int ans1 = solve(0, n - 2, nums);
+        int ans2 = solve(1, n - 1, nums);
+        return max(ans1, ans2);
     }
 };
