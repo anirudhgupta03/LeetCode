@@ -1,5 +1,6 @@
 //LIS Variant
 //Ref: https://www.youtube.com/watch?v=Wv6DlL0Sawg
+//Method - 1
 class Solution {
 public:
     vector<int> largestDivisibleSubset(vector<int>& nums) {
@@ -43,5 +44,36 @@ public:
             result.push_back(nums[res[i]]);
         }
         return result;
+    }
+};
+
+//Method - 2
+class Solution {
+public:
+    vector<int> largestDivisibleSubset(vector<int>& nums) {
+        
+        sort(nums.begin(), nums.end());
+        
+        int n = nums.size();
+        
+        vector<int> dp[n];
+        dp[0].push_back(nums[0]);
+        
+        vector<int> res = dp[0];
+        
+        for(int i = 1; i < n; i++){
+            for(int j = 0; j < i; j++){
+                if(nums[i] % nums[j] == 0){
+                    if(dp[j].size() > dp[i].size()){
+                        dp[i] = dp[j];
+                    }
+                }
+            }
+            dp[i].push_back(nums[i]);
+            if(dp[i].size() > res.size()){
+                res = dp[i];
+            }
+        }
+        return res;
     }
 };
