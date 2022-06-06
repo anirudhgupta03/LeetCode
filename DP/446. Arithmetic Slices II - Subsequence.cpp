@@ -1,4 +1,5 @@
 //Ref: https://www.youtube.com/watch?v=XjLT4TaXsgw
+//Method - 1
 class Solution {
 public:
     #define ll long long
@@ -39,6 +40,37 @@ public:
                         dp[i][temp] = 1;
                     }
                 }
+            }
+        }
+        return count;
+    }
+};
+
+//Method - 2
+class Solution {
+public:
+    #define ll long long
+    int numberOfArithmeticSlices(vector<int>& nums) {
+        
+        int n = nums.size();
+        
+        if(n <= 2) return 0;
+        
+        vector<unordered_map<ll,ll>> dp(n);
+        
+        ll count = 0;
+        
+        for(int i = 1; i < n; i++){
+            for(int j = 0; j < i; j++){
+                
+                ll diff = (ll)nums[i] - (ll)nums[j];
+                
+                if(dp[j].find(diff) != dp[j].end()){
+                    count += dp[j][diff];
+                    dp[i][diff] += dp[j][diff];
+                }
+                
+                dp[i][diff]++;
             }
         }
         return count;
