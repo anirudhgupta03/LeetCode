@@ -1,3 +1,6 @@
+//Method - 1
+//TC - O(N)
+//SC - O(N)
 class Solution {
 public:
     int maxRotateFunction(vector<int>& nums) {
@@ -28,5 +31,37 @@ public:
             maxsum = max(maxsum, sum);
         }
         return maxsum;
+    }
+};
+
+//Method - 2
+//TC - O(N)
+//SC - O(1)
+class Solution {
+public:
+    int maxRotateFunction(vector<int>& nums) {
+        
+        int n = nums.size();
+        
+        int sum1 = 0, sum2 = 0;
+        
+        for(int i = 1; i < n; i++){
+            sum1 += nums[i];
+            sum2 += i*nums[i];
+        }
+        
+        for(int i = 0; i < n; i++){
+            nums.push_back(nums[i]);
+        }
+        
+        int ans = sum2;
+        
+        for(int i = n; i < 2*n - 1; i++){
+            sum2 -= sum1;
+            sum2 += (n - 1)*nums[i];
+            sum1 = sum1 - nums[i - n + 1] + nums[i];
+            ans = max(ans, sum2);
+        }
+        return ans;
     }
 };
