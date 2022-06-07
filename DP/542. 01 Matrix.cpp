@@ -1,3 +1,4 @@
+//Method - 1
 class Solution {
 public:
     vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
@@ -86,5 +87,49 @@ public:
             }
         }
         return res;
+    }
+};
+
+//Method - 2
+//Multi-Source BFS
+class Solution {
+public:
+    int dx[4] = {-1,1,0,0};
+    int dy[4] = {0,0,-1,1};
+    #define pii pair<int,int>
+    vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
+        
+        int m = mat.size(), n = mat[0].size();
+        
+        vector<vector<int>> dist(m, vector<int>(n, INT_MAX));
+        
+        queue<pii> q;
+        
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(mat[i][j] == 0){
+                    q.push({i,j});
+                    dist[i][j] = 0;
+                }
+            }
+        }
+        
+        while(!q.empty()){
+            
+            int x = q.front().first, y = q.front().second;
+            q.pop();
+            
+            for(int i = 0; i < 4; i++){
+                int xo = x + dx[i], yo = y + dy[i];
+                
+                if(xo >= 0 && xo < m && yo >= 0 && yo < n){
+                    if(dist[x][y] + 1 < dist[xo][yo]){
+                        dist[xo][yo] = dist[x][y] + 1;
+                        q.push({xo, yo});
+                    }
+                }
+            }
+        }
+        return dist;
     }
 };
