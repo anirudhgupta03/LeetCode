@@ -1,23 +1,24 @@
 class Solution {
 public:
-    #define pivi pair<int,vector<int>> 
-    int solve(int sum, vector<int> &price, vector<vector<int>> &special, vector<int> &needs, map<pivi,int> &dp){
+    map<vector<int>,int> dp;
+    int solve(int count, vector<int> &price, vector<vector<int>> &special, vector<int> &needs){
         
-        if(sum == 0){
+        bool flag = true;
+        
+        if(count == 0){
             return 0;
         }
         
-        if(dp.find({sum,needs}) != dp.end()){
-            return dp[{sum,needs}];
+        if(dp.find(needs) != dp.end()){
+            return dp[needs];
         }
+        int minPrice = INT_MAX;
         
-        int mincost = INT_MAX;
-        
-        for(int i = 0; i < needs.size(); i++){
+        for(int i = 0; i < price.size(); i++){
             if(needs[i] != 0){
                 int temp = needs[i];
                 needs[i] = 0;
-                mincost = min(mincost, solve(sum - temp, price, special, needs, dp) + temp*price[i]);
+                minPrice = min(minPrice, solve(count - temp, price, special, needs) + temp*price[i]);
                 needs[i] = temp;
             }
         }
@@ -25,37 +26,32 @@ public:
         for(int i = 0; i < special.size(); i++){
             bool flag = true;
             for(int j = 0; j < needs.size(); j++){
-                if(special[i][j] > needs[j]){
+                if(needs[j] < special[i][j]){
                     flag = false;
                     break;
                 }
             }
             if(flag){
-                int tsum = 0;
-                for(int j = 0; j < special[i].size() - 1; j++){
-                    tsum += special[i][j];
+                int t = 0;
+                for(int j = 0; j < needs.size(); j++){
                     needs[j] -= special[i][j];
+                    t += special[i][j];
                 }
-                mincost = min(mincost, solve(sum - tsum, price, special, needs, dp) + special[i][special[i].size() - 1]);
-                for(int j = 0; j < special[i].size() - 1; j++){
+                minPrice = min(minPrice, solve(count - t, price, special, needs) + special[i][needs.size()]);
+                for(int j = 0; j < needs.size(); j++){
                     needs[j] += special[i][j];
                 }
             }
         }
-        return dp[{sum,needs}] = mincost;
+        return dp[needs] = minPrice;
     }
     int shoppingOffers(vector<int>& price, vector<vector<int>>& special, vector<int>& needs) {
         
-        int cost = 0, mincost = INT_MAX;
-        
-        int sum = 0;
-        
-        for(int i = 0; i < needs.size(); i++){
-            sum += needs[i];
+        dp.clear();
+        int count = 0;
+        for(int x: needs){
+            count += x;
         }
-        
-        map<pivi,int> dp;
-        
-        return solve(sum, price, special, needs, dp);
+        return solve(count, price, special, needs);
     }
 };
