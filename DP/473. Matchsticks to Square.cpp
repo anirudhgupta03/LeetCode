@@ -1,38 +1,43 @@
+//Ref: https://www.youtube.com/watch?v=OB4zw7BqKP8
 class Solution {
 public:
-    #define ppiivi pair<pair<int,int>,vector<int>>
-    bool solve(int cursum, int reqsum, int count, vector<int> &vis, vector<int>& matchsticks, map<ppiivi,int> &dp){
+    #define ll long long
+    map<pair<ll,vector<ll>>, bool> dp;
+    bool alreadyhappened(vector<ll> &sides, ll pos){
+        for(ll i = 0; i < pos; i++){
+            if(sides[i] == sides[pos]){
+                return true;
+            }
+        }
+        return false;
+    }
+    bool solve(int ind, ll sum, vector<ll> &v, vector<int> &matchsticks, int tsum){
         
-        if(count == 4){
+        if(sum == 0 && ind == matchsticks.size()){
             return true;
         }
+        if(sum == 0 || ind == matchsticks.size()){
+            return false;
+        }
         
-        if(dp.find({{cursum, count},vis}) != dp.end()){
-            return dp[{{cursum,count},vis}];
-        }
-        for(int i = 0; i < matchsticks.size(); i++){
-            if(vis[i] == 0 && cursum + matchsticks[i] < reqsum){
-                vis[i] = 1;
-                bool flag = solve(cursum + matchsticks[i], reqsum, count, vis, matchsticks, dp);
-                vis[i] = 0;
-                if(flag) return dp[{{cursum,count},vis}] = true;
+        for(int i = 0; i < 4; i++){
+            if(alreadyhappened(v, i)){
+                continue;
             }
-            else if(vis[i] == 0 && cursum + matchsticks[i] == reqsum){
-                vis[i] = 1;
-                bool flag = solve(0, reqsum, count + 1, vis, matchsticks, dp);
-                vis[i] = 0;
-                if(flag) return dp[{{cursum,count},vis}] = true;
+            if(v[i] + matchsticks[ind] <= tsum){
+                v[i] += matchsticks[ind];
+                bool flag = solve(ind + 1, sum - matchsticks[ind], v, matchsticks, tsum);
+                if(flag) return true;
+                v[i] -= matchsticks[ind];
             }
         }
-        return dp[{{cursum,count},vis}] = false;
+        return false;
     }
     bool makesquare(vector<int>& matchsticks) {
         
-        int n = matchsticks.size();
+        ll sum = 0;
         
-        int sum = 0;
-        
-        for(int i = 0; i < n; i++){
+        for(int i = 0; i < matchsticks.size(); i++){
             sum += matchsticks[i];
         }
         
@@ -40,11 +45,14 @@ public:
             return false;
         }
         
-        vector<int> vis(n,0);
-        int count = 0;
+        sort(matchsticks.begin(), matchsticks.end(), greater<int>());
         
-        map<ppiivi,int> dp;
+        if(matchsticks[0] > sum/4 || matchsticks.size() < 4){
+            return false;
+        }
+        vector<ll> v(4, 0);
+        dp.clear();
         
-        return solve(0, sum/4, count, vis, matchsticks, dp);
+        return solve(0, sum, v, matchsticks, sum/4);
     }
 };
