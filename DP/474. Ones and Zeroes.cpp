@@ -39,3 +39,39 @@ public:
         return solve(0,0,0,m, n, len, binary, dp);
     }
 };
+
+//Alter
+class Solution {
+public:
+    int dp[601][101][101];
+    int solve(int ind, int m, int n, vector<pair<int,int>> &res){
+        
+        if(ind == res.size()){
+            return 0;
+        }
+        if(dp[ind][m][n] != -1){
+            return dp[ind][m][n];
+        }
+        int ans = 0;
+        if(m - res[ind].first >= 0 && n - res[ind].second >= 0){
+            ans = max(ans, solve(ind + 1, m - res[ind].first, n - res[ind].second, res) + 1);
+        }
+        ans = max(ans, solve(ind + 1, m, n, res));
+        return dp[ind][m][n] = ans;
+    }
+    int findMaxForm(vector<string>& strs, int m, int n) {
+        
+        vector<pair<int,int>> res(strs.size());
+        
+        for(int i = 0; i < strs.size(); i++){
+            int ones = 0, zeros = 0;
+            for(int j = 0; j < strs[i].size(); j++){
+                if(strs[i][j] == '0') zeros++;
+                else ones++;
+            }
+            res[i] = {zeros, ones};
+        }
+        memset(dp, -1, sizeof(dp));
+        return solve(0, m, n, res);
+    }
+};
