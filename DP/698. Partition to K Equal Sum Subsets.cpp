@@ -1,3 +1,5 @@
+//Method - 1
+//Gives TLE
 class Solution {
 public:
     #define ppiivi pair<pair<int,int>,vector<int>>
@@ -48,5 +50,62 @@ public:
         vector<int> temp;
         
         return solve(0,sum/k,0,k,nums, dp, vis); 
+    }
+};
+
+//Method - 2
+class Solution {
+public:
+    bool alreadyHappened(vector<int> &sides, int pos){
+        for(int i = 0; i < pos; i++){
+            if(sides[i] == sides[pos]){
+                return true;
+            }
+        }
+        return false;
+    }
+    bool solve(int ind, int sum, vector<int> &v, vector<int> &nums, int tsum){
+        
+        if(sum == 0 && ind == nums.size()){
+            return true;
+        }
+        if(sum == 0 || ind == nums.size()){
+            return false;
+        }
+        
+        for(int i = 0; i < v.size(); i++){
+            if(alreadyHappened(v, i)){
+                continue;
+            }
+            if(v[i] + nums[ind] <= tsum){
+                v[i] += nums[ind];
+                bool flag = solve(ind + 1, sum - nums[ind], v, nums, tsum);
+                if(flag) return true;
+                v[i] -= nums[ind];
+            }
+        }
+        return false;
+    }
+    bool canPartitionKSubsets(vector<int>& nums, int k) {
+        
+        int sum = 0;
+        
+        for(int i = 0; i < nums.size(); i++){
+            sum += nums[i];
+        }
+        
+        if(sum % k != 0){
+            return false;
+        }
+        
+        sort(nums.begin(), nums.end(), greater<int>());
+        
+        if(nums[0] > sum/k || nums.size() < k){
+            return false;
+        }
+        
+        vector<int> v(k, 0);
+        
+        return solve(0, sum, v, nums, sum/k);
     }
 };
