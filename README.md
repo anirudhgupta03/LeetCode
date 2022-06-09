@@ -55,8 +55,8 @@ Code: https://github.com/anirudhgupta03/GFG/blob/main/Graph/Negative%20weight%20
           E edges   vertices
 Steps:
 1) Sort all the edges in non-decreasing order of their weight.
-2) a) Pick the smallest edge.
-   b) Check if the new edge forms a cycle in our spanning tree being formed(DSU).
+2) a) Pick the smallest edge.<br/>
+   b) Check if the new edge forms a cycle in our spanning tree being formed(DSU).<br/>
    c) If cycle is not formed -> include the edge<br/>
       elese -> discard the edge<br/>
  
