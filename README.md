@@ -21,7 +21,7 @@ Steps:
 #### Video Ref1: https://www.youtube.com/watch?v=FrLWd1tJ_Wc<br/>
 #### Video Ref2: https://www.youtube.com/watch?v=24HziTZ8_xo<br/>
 #### TC: O(VE)<br/>
-### SC: O(V)<br/>
+#### SC: O(V)<br/>
 
 Dijkstra VS Bellman Ford
 1) Dijkstra's Algorithm and Bellman Ford Algorithm does not find shortest path for graphs with negative edge weight cycles.
@@ -50,9 +50,9 @@ Code: https://github.com/anirudhgupta03/GFG/blob/main/Graph/Negative%20weight%20
 #### Video Ref1: https://www.youtube.com/watch?v=_Iz-QLBGKpM
 #### Video Re2: https://www.youtube.com/watch?v=Ub-fJ-KoBQM
 
-#### TC: O(ElogE    +  VlogV) 
-            Sorting   DSU on V
-            E edges   vertices
+#### TC: O(ElogE  +  VlogV) 
+          Sorting   DSU on V
+          E edges   vertices
 Steps:
 1) Sort all the edges in non-decreasing order of their weight.
 2) a) Pick the smallest edge.
@@ -70,9 +70,7 @@ Code: https://github.com/anirudhgupta03/GFG/blob/main/Graph/Minimum%20Spanning%2
 #### Select min value option first.
 #### Video Ref: https://www.youtube.com/watch?v=xthRL0lcx2w
 
-#### TC: O(ElogE    +  VlogV) 
-            Sorting   DSU on V
-            E edges   vertices
+#### TC: O(V*V)
 Steps:
 1) All node weights are INT_MAX except source.
 2) Select node with min. weight(start at source).
