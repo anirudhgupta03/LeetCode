@@ -1,5 +1,5 @@
 ## Graph Algos
-### Dijkstra's Algrorithm
+### Dijkstra's Algrorithm<br/>
 
 ### Bellman Ford Algorithm<br/>
 Video Ref1: https://www.youtube.com/watch?v=FrLWd1tJ_Wc<br/>
@@ -17,5 +17,5 @@ Steps:
 Problem1: https://practice.geeksforgeeks.org/problems/distance-from-the-source-bellman-ford-algorithm/0/?fbclid=IwAR2_lL0T84DnciLyzMTQuVTMBOi82nTWNLuXjUgahnrtBgkphKiYk6xcyJU#<br/>
 Code: https://github.com/anirudhgupta03/GFG/blob/main/Graph/Distance%20from%20the%20Source%20(Bellman-Ford%20Algorithm)%20.cpp<br/>
 
-Problem1: https://practice.geeksforgeeks.org/problems/negative-weight-cycle3504/1#<br/>
+Problem2: https://practice.geeksforgeeks.org/problems/negative-weight-cycle3504/1#<br/>
 Code: https://github.com/anirudhgupta03/GFG/blob/main/Graph/Negative%20weight%20cycle%20-%20Using%20Bellman%20Ford%20Algorithm.cpp<br/>
