@@ -1,12 +1,27 @@
 # Graph Algos
-### Dijkstra's Algrorithm<br/>
+### Dijkstra's Algorithm<br/>
+#### Shortest Path Algorithm
+#### Given a graph, find shortest path from a source to all other vertices
+### Video Ref1: https://www.youtube.com/watch?v=t2d-XYuPfg0
+### Video Ref2: https://www.youtube.com/watch?v=t2d-XYuPfg0
+#### TC: O(ElogV)
+#### Limitation: It doesn't work for negative edge weight cycle
+Steps:
+1) Maintain a set of processed nodes.
+2) Assign all nodes with distance = INT_MAX except source node(0).
+3) Repeat following:-(unless all vertices are included)
+   a) Pick min. value vertec which is not already processed.
+   b) Include this selected node in processed set.
+   c) Update all the adjacent node distances.
+   d) if(new distance < old distance) then UPDATE<br/>
+      else skip
 
 ### Bellman Ford Algorithm<br/>
 #### Single Source Shortest Path
-Video Ref1: https://www.youtube.com/watch?v=FrLWd1tJ_Wc<br/>
-Video Ref2: https://www.youtube.com/watch?v=24HziTZ8_xo<br/>
-TC: O(VE)<br/>
-SC: O(V)<br/>
+#### Video Ref1: https://www.youtube.com/watch?v=FrLWd1tJ_Wc<br/>
+#### Video Ref2: https://www.youtube.com/watch?v=24HziTZ8_xo<br/>
+#### TC: O(VE)<br/>
+### SC: O(V)<br/>
 
 Dijkstra VS Bellman Ford
 1) Dijkstra's Algorithm and Bellman Ford Algorithm does not find shortest path for graphs with negative edge weight cycles.
@@ -27,3 +42,42 @@ Code: https://github.com/anirudhgupta03/GFG/blob/main/Graph/Distance%20from%20th
 
 Problem2: https://practice.geeksforgeeks.org/problems/negative-weight-cycle3504/1#<br/>
 Code: https://github.com/anirudhgupta03/GFG/blob/main/Graph/Negative%20weight%20cycle%20-%20Using%20Bellman%20Ford%20Algorithm.cpp<br/>
+
+### Kruskal's Algorithm
+#### Minimum Spanning Tree Algorithm
+#### MST can be found for connected graph.
+#### Kruskal's Algorithm is a greedy algorithm.
+#### Video Ref1: https://www.youtube.com/watch?v=_Iz-QLBGKpM
+#### Video Re2: https://www.youtube.com/watch?v=Ub-fJ-KoBQM
+
+#### TC: O(ElogE    +  VlogV) 
+            Sorting   DSU on V
+            E edges   vertices
+Steps:
+1) Sort all the edges in non-decreasing order of their weight.
+2) a) Pick the smallest edge.
+   b) Check if the new edge forms a cycle in our spanning tree being formed(DSU).
+   c) If cycle is not formed -> include the edge<br/>
+      elese -> discard the edge<br/>
+ 
+Problem: https://practice.geeksforgeeks.org/problems/minimum-spanning-tree/1<br/>
+Code: https://github.com/anirudhgupta03/GFG/blob/main/Graph/Minimum%20Spanning%20Tree%202.cpp<br/>
+
+### Prims Algorithm
+#### Minimum Spanning Tree Algorithm
+#### Greedy Algorithm
+#### MST can be found for connected graph.
+#### Select min value option first.
+#### Video Ref: https://www.youtube.com/watch?v=xthRL0lcx2w
+
+#### TC: O(ElogE    +  VlogV) 
+            Sorting   DSU on V
+            E edges   vertices
+Steps:
+1) All node weights are INT_MAX except source.
+2) Select node with min. weight(start at source).
+3) Include selected node in set MST.
+4) Relax/compute all adjacent edges.
+ 
+Problem: https://practice.geeksforgeeks.org/problems/minimum-spanning-tree/1<br/>
+Code: https://github.com/anirudhgupta03/GFG/blob/main/Graph/Minimum%20Spanning%20Tree%201.cpp<br/>
