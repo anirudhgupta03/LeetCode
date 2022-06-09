@@ -9,10 +9,10 @@
 Steps:
 1) Maintain a set of processed nodes.
 2) Assign all nodes with distance = INT_MAX except source node(0).
-3) Repeat following:-(unless all vertices are included)
-   a) Pick min. value vertec which is not already processed.
-   b) Include this selected node in processed set.
-   c) Update all the adjacent node distances.
+3) Repeat following:-(unless all vertices are included)<br/>
+   a) Pick min. value vertec which is not already processed.<br/>
+   b) Include this selected node in processed set.<br/>
+   c) Update all the adjacent node distances.<br/>
    d) if(new distance < old distance) then UPDATE<br/>
       else skip
 
