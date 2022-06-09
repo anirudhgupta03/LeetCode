@@ -1,9 +1,9 @@
 # Graph Algos
-### Dijkstra's Algorithm<br/>
+## Dijkstra's Algorithm<br/>
 #### Shortest Path Algorithm
 #### Given a graph, find shortest path from a source to all other vertices
-### Video Ref1: https://www.youtube.com/watch?v=t2d-XYuPfg0
-### Video Ref2: https://www.youtube.com/watch?v=t2d-XYuPfg0
+#### Video Ref1: https://www.youtube.com/watch?v=t2d-XYuPfg0
+#### Video Ref2: https://www.youtube.com/watch?v=t2d-XYuPfg0
 #### TC: O(ElogV)
 #### Limitation: It doesn't work for negative edge weight cycle
 Steps:
@@ -16,7 +16,7 @@ Steps:
    d) if(new distance < old distance) then UPDATE<br/>
       else skip
 
-### Bellman Ford Algorithm<br/>
+## Bellman Ford Algorithm<br/>
 #### Single Source Shortest Path
 #### Video Ref1: https://www.youtube.com/watch?v=FrLWd1tJ_Wc<br/>
 #### Video Ref2: https://www.youtube.com/watch?v=24HziTZ8_xo<br/>
@@ -43,7 +43,7 @@ Code: https://github.com/anirudhgupta03/GFG/blob/main/Graph/Distance%20from%20th
 Problem2: https://practice.geeksforgeeks.org/problems/negative-weight-cycle3504/1#<br/>
 Code: https://github.com/anirudhgupta03/GFG/blob/main/Graph/Negative%20weight%20cycle%20-%20Using%20Bellman%20Ford%20Algorithm.cpp<br/>
 
-### Kruskal's Algorithm
+## Kruskal's Algorithm
 #### Minimum Spanning Tree Algorithm
 #### MST can be found for connected graph.
 #### Kruskal's Algorithm is a greedy algorithm.
@@ -63,7 +63,7 @@ Steps:
 Problem: https://practice.geeksforgeeks.org/problems/minimum-spanning-tree/1<br/>
 Code: https://github.com/anirudhgupta03/GFG/blob/main/Graph/Minimum%20Spanning%20Tree%202.cpp<br/>
 
-### Prims Algorithm
+## Prims Algorithm
 #### Minimum Spanning Tree Algorithm
 #### Greedy Algorithm
 #### MST can be found for connected graph.
