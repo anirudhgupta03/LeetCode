@@ -143,3 +143,62 @@ public:
         return res;
     }
 };
+
+//Further Optimisation
+//3D DP
+class Solution {
+public:
+    int dp[51][51][51];
+    int solve(int r1, int c1, int r2, vector<vector<int>> &grid){
+        
+        int c2 = r1 + c1 - r2;
+        
+        if(r1 == grid.size() - 1 && c1 == grid[0].size() - 1){
+            return grid[r1][c1];
+        }
+        
+        if(dp[r1][c1][r2] != -1){
+            return dp[r1][c1][r2];
+        }
+        int maxCherries = INT_MIN;
+        
+        if(r1 + 1 < grid.size() && r2 + 1 < grid.size() && grid[r1 + 1][c1] != -1 && grid[r2 + 1][c2] != -1){
+            int res = solve(r1 + 1, c1, r2 + 1, grid);
+            if(res != INT_MIN){
+                if(r1 == r2 && c1 == c2) maxCherries = max(maxCherries, res + grid[r1][c1]);
+                else maxCherries = max(maxCherries, res + grid[r1][c1] + grid[r2][c2]);
+            }
+        }
+        
+        if(r1 + 1 < grid.size() && c2 + 1 < grid.size() && grid[r1 + 1][c1] != -1 && grid[r2][c2 + 1] != -1){
+            int res = solve(r1 + 1, c1, r2, grid);
+            if(res != INT_MIN){
+                if(r1 == r2 && c1 == c2) maxCherries = max(maxCherries, res + grid[r1][c1]);
+                else maxCherries = max(maxCherries, res + grid[r1][c1] + grid[r2][c2]);
+            }
+        }
+        
+        if(c1 + 1 < grid.size() && r2 + 1 < grid.size() && grid[r1][c1 + 1] != -1 && grid[r2 + 1][c2] != -1){
+            int res = solve(r1, c1 + 1, r2 + 1, grid);
+            if(res != INT_MIN){
+                if(r1 == r2 && c1 == c2) maxCherries = max(maxCherries, res + grid[r1][c1]);
+                else maxCherries = max(maxCherries, res + grid[r1][c1] + grid[r2][c2]);
+            }
+        }
+        
+        if(c1 + 1 < grid.size() && c2 + 1 < grid.size() && grid[r1][c1 + 1] != -1 && grid[r2][c2 + 1] != -1){
+            int res = solve(r1, c1 + 1, r2, grid);
+            if(res != INT_MIN){
+                if(r1 == r2 && c1 == c2) maxCherries = max(maxCherries, res + grid[r1][c1]);
+                else maxCherries = max(maxCherries, res + grid[r1][c1] + grid[r2][c2]);
+            }
+        }
+        return dp[r1][c1][r2] = maxCherries;
+    }
+    int cherryPickup(vector<vector<int>>& grid) {
+        memset(dp,-1,sizeof(dp));
+        int res = solve(0, 0, 0, grid);
+        if(res == INT_MIN) return 0;
+        return res;
+    }
+};
