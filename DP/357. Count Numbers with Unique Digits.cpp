@@ -1,3 +1,4 @@
+//Method - 1
 class Solution {
 public:
     int countNumbersWithUniqueDigits(int n) {
@@ -27,3 +28,24 @@ public:
         return sum;
     }
 };
+
+//Method - 2
+class Solution {
+public:
+    int countNumbersWithUniqueDigits(int n) {
+        
+        if(n == 0){
+            return 1;
+        }
+        int ans = 10;
+        int start = 9, curr = 9;
+        
+        n--;
+        while(n-- && start){
+            curr *= start;
+            start--;
+            ans += curr;
+        }
+        return ans;
+    }
+}; 
