@@ -1,3 +1,4 @@
+//Method - 1
 class Solution {
 public:
     int dx[4] = {-1,1,0,0};
@@ -61,5 +62,53 @@ public:
         }
         
         return ones - count;
+    }
+};
+
+//Method - 2
+class Solution {
+public:
+    int dx[4] = {-1,1,0,0};
+    int dy[4] = {0,0,-1,1};
+    void dfs(int x, int y, vector<vector<int>> &grid){
+        grid[x][y] = 0;
+        for(int i = 0; i < 4; i++){
+            int xo = x + dx[i], yo = y + dy[i];
+            if(xo >= 0 && yo >= 0 && xo < grid.size() && yo < grid[0].size() && grid[xo][yo] == 1){
+                dfs(xo, yo, grid);
+            }
+        }
+    }
+    int numEnclaves(vector<vector<int>>& grid) {
+        
+        int m = grid.size(), n = grid[0].size();
+        
+        for(int i = 0; i < m; i++){
+            if(grid[i][0] == 1){
+                dfs(i, 0, grid);
+            }
+            if(grid[i][n - 1] == 1){
+                dfs(i, n - 1, grid);
+            }
+        }
+        
+        for(int j = 1; j < n - 1; j++){
+            if(grid[0][j] == 1){
+                dfs(0, j, grid);
+            }
+            if(grid[m - 1][j] == 1){
+                dfs(m - 1, j, grid);
+            }
+        }
+        
+        int count = 0;
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(grid[i][j] == 1){
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 };
