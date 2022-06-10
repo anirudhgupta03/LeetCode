@@ -1,3 +1,4 @@
+//Method - 1
 class Solution {
 public:
     #define pvii pair<vector<int>,int>
@@ -115,6 +116,7 @@ public:
 };
 
 //Optimal Approach
+//Method - 2
 //Ref: https://www.youtube.com/watch?v=8e6U4O5VUx0
 class Solution {
 public:
@@ -179,5 +181,51 @@ public:
         maxsum = max(maxsum, solve(firstLen, secondLen, n, prefix, nums));
         
         return maxsum;
+    }
+};
+
+//Method - 3
+class Solution {
+public:
+    int solve(vector<int>& nums, int firstLen, int secondLen){
+        
+        int n = nums.size();
+        int sum = 0;
+        
+        for(int i = 0; i < firstLen; i++){
+            sum += nums[i];
+        }
+        
+        vector<int> dp1(n, 0);
+        dp1[firstLen - 1] = sum;
+        
+        for(int i = firstLen; i < n; i++){
+            sum += nums[i];
+            sum -= nums[i - firstLen];
+            dp1[i] = max(dp1[i - 1], sum);
+        }
+        
+        sum = 0;
+        for(int i = n - 1; i >= n - secondLen; i--){
+            sum += nums[i];
+        }
+        vector<int> dp2(n, 0);
+        dp2[n - secondLen] = sum;
+        
+        for(int i = n - secondLen - 1; i >= 0; i--){
+            sum += nums[i];
+            sum -= nums[i + secondLen];
+            dp2[i] = max(dp2[i + 1], sum);
+        }
+        
+        int maxSum = 0;
+        for(int i = firstLen - 1; i < n - secondLen; i++){
+            maxSum = max(maxSum, dp1[i] + dp2[i + 1]);
+        }
+        return maxSum;
+    }
+    int maxSumTwoNoOverlap(vector<int>& nums, int firstLen, int secondLen) {
+        
+        return max(solve(nums, firstLen, secondLen), solve(nums, secondLen, firstLen));
     }
 };
