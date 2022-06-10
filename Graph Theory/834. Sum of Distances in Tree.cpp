@@ -16,7 +16,7 @@ public:
         res[curr] = result;
         for(int child: adj[curr]){
             if(child != par){
-                dfs2(child, curr, adj, res, subtree, n, result - subtree[child] + n - subtree[child]);
+                dfs2(child, curr, adj, res, subtree, n, result - subtree[child] + subtree[0] - subtree[child]);
             }
         }
     }
