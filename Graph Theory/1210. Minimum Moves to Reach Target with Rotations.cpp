@@ -1,3 +1,4 @@
+//Method - 1
 class Solution {
 public:
     #define pii pair<int,int>
@@ -52,6 +53,78 @@ public:
                         if(vis.find({{x1,y1},{x1,y1+1}}) == vis.end()){
                             q.push({{x1,y1},{x1,y1+1}});
                         }
+                    }
+                }
+            }
+            steps++;
+        }
+        return -1;
+    }
+};
+
+//Method - 2
+class Solution {
+public:
+    #define pipii pair<int,pair<int,int>>
+    int minimumMoves(vector<vector<int>>& grid) {
+        
+        int n = grid.size();
+        
+        if(grid[n - 1][n - 2] || grid[n - 1][n - 1]){
+            return -1;
+        }
+        
+        int steps = 0;
+        
+        queue<pipii> q;
+        q.push({0,{0,0}});
+        
+        int vis[2][n][n];
+        memset(vis,0,sizeof(vis));
+        
+        while(!q.empty()){
+            int sz = q.size();
+            while(sz--){
+                
+                int dir = q.front().first, tailx = q.front().second.first, taily = q.front().second.second;
+                int headx, heady;
+                
+                if(dir == 0){
+                    headx = tailx;
+                    heady = taily + 1;
+                }
+                else{
+                    heady = taily;
+                    headx = tailx + 1;
+                }
+                
+                q.pop();
+                
+                if(tailx == n - 1 && taily == n - 2 && headx == n - 1 && heady == n - 1){
+                    return steps;
+                }
+                
+                if(vis[dir][tailx][taily]) continue;
+                vis[dir][tailx][taily] = 1;
+                
+                if(heady + 1 < n){
+                    if(vis[dir][tailx][taily + 1] == 0 && grid[tailx][taily + 1] == 0 && grid[headx][heady + 1] == 0){
+                        q.push({dir,{tailx, taily + 1}});
+                    }
+                }
+                if(headx + 1 < n){ 
+                    if(vis[dir][tailx + 1][taily] == 0 && grid[tailx + 1][taily] == 0 && grid[headx + 1][heady] == 0){
+                        q.push({dir,{tailx + 1, taily}});
+                    }
+                }
+                if(headx == tailx){
+                    if(headx + 1 < n && vis[1 - dir][tailx][taily] == 0 && grid[headx + 1][taily] == 0 && grid[headx + 1][heady] == 0){
+                        q.push({1 - dir,{tailx, taily}});
+                    }
+                }
+                if(heady == taily){
+                    if(heady + 1 < n && vis[1 - dir][taily][tailx] == 0 && grid[headx][taily + 1] == 0 && grid[tailx][taily + 1] == 0){
+                        q.push({1 - dir,{tailx, taily}});
                     }
                 }
             }
