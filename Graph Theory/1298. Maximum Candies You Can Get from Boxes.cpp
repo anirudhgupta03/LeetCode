@@ -1,3 +1,4 @@
+//Method - 1
 class Solution {
 public:
     int maxCandies(vector<int>& status, vector<int>& candies, vector<vector<int>>& keys, vector<vector<int>>& containedBoxes, vector<int>& initialBoxes) {
@@ -47,5 +48,51 @@ public:
             }
         }
         return sum;
+    }
+};
+
+//Method - 2
+class Solution {
+public:
+    int maxCandies(vector<int>& status, vector<int>& candies, vector<vector<int>>& keys, vector<vector<int>>& containedBoxes, vector<int>& initialBoxes) {
+        
+        int n = status.size();
+        
+        int ans = 0;
+        
+        vector<int> boxVis(n, 0), boxFound(n, 0);
+        queue<int> q;
+        
+        for(int i = 0; i < initialBoxes.size(); i++){
+            q.push(initialBoxes[i]);
+        }
+        
+        while(!q.empty()){
+            
+            int box = q.front();
+            boxFound[box] = 1;
+            q.pop();
+            
+            if(boxVis[box] || status[box] == 0) continue;
+            
+            boxVis[box] = 1;
+            ans += candies[box];
+            
+            for(int i = 0; i < containedBoxes[box].size(); i++){
+                int insideBox = containedBoxes[box][i];
+                if(boxVis[insideBox] == 0){
+                    q.push(insideBox);
+                }
+            }
+            
+            for(int i = 0; i < keys[box].size(); i++){
+                int boxKey = keys[box][i];
+                if(boxFound[boxKey] && boxVis[boxKey] == 0){
+                    q.push(boxKey);
+                }
+                status[boxKey] = 1;
+            }
+        }
+        return ans;
     }
 };
