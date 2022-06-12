@@ -1,3 +1,4 @@
+//Method - 1
 class Solution {
 public:
     int dx[4] = {-1,1,0,0};
@@ -106,6 +107,83 @@ public:
                 }
             }
             pushes++;
+        }
+        return -1;
+    }
+};
+
+//Method - 2
+class Solution {
+public:
+    #define pii pair<int,int>
+    #define pippp pair<int,pair<pii,pii>>
+    int dx[4] = {-1,1,0,0};
+    int dy[4] = {0,0,-1,1};
+    struct cmp{
+      bool operator()(pippp &p1, pippp &p2){
+          return p1.first > p2.first;
+      }  
+    };
+    int minPushBox(vector<vector<char>>& grid) {
+        
+        int m = grid.size(), n = grid[0].size();
+        
+        priority_queue<pippp, vector<pippp>, cmp> pq;
+        int tx,ty,sx,sy,bx,by;
+
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(grid[i][j] == 'S'){
+                    sx = i;
+                    sy = j;
+                }
+                if(grid[i][j] == 'B'){
+                    bx = i;
+                    by = j;
+                }
+                if(grid[i][j] == 'T'){
+                    tx = i;
+                    ty = j;
+                }
+            }
+        }
+        
+        int vis[m][n][m][n];
+        memset(vis, 0, sizeof(vis));
+        
+        pq.push({0,{{sx,sy},{bx,by}}});
+        
+        while(!pq.empty()){
+            
+            pippp p = pq.top();
+            pq.pop();
+            
+            int count = p.first;
+            sx = p.second.first.first, sy = p.second.first.second;
+            bx = p.second.second.first, by = p.second.second.second;
+
+            if(vis[sx][sy][bx][by]) continue;
+            vis[sx][sy][bx][by] = 1;
+
+            for(int i = 0; i < 4; i++){
+                int sxo = sx + dx[i], syo = sy + dy[i];
+                if(sxo >= 0 && syo >= 0 && sxo < m && syo < n){
+                    if(sxo == bx && syo == by){
+                        int bxo = sxo + dx[i], byo = syo + dy[i];
+                        if(bxo >= 0 && byo >= 0 && bxo < m && byo < n && vis[sxo][syo][bxo][byo] == 0){
+                            if(bxo == tx && byo == ty){
+                                return count + 1;
+                            }
+                            else if(grid[bxo][byo] != '#'){
+                                pq.push({count + 1,{{sxo,syo}, {bxo, byo}}});
+                            }
+                        }
+                    }
+                    else if(grid[sxo][syo] != '#' && vis[sxo][syo][bx][by] == 0){
+                        pq.push({count,{{sxo,syo}, {bx, by}}});
+                    }
+                }
+            }
         }
         return -1;
     }
