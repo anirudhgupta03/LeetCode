@@ -132,3 +132,55 @@ public:
         return 0;
     }
 };
+
+//BFS
+class Solution {
+public:
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+        
+        unordered_set<string> us;
+        
+        for(auto &x: wordList){
+            us.insert(x);
+        }
+        
+        if(us.find(endWord) == us.end()){
+            return 0;
+        }
+        
+        int steps = 1;
+        queue<string> q;
+        q.push(beginWord);
+        
+        unordered_set<string> vis;
+        
+        while(!q.empty()){
+            int sz = q.size();
+            while(sz--){
+                string curr = q.front();
+                q.pop();
+                
+                if(curr == endWord){
+                    return steps;
+                }
+                
+                if(vis.find(curr) != vis.end()) continue;
+                vis.insert(curr);
+                
+                for(int i = 0; i < curr.size(); i++){
+                    char c = curr[i];
+                    for(char ch = 'a'; ch <= 'z'; ch++){
+                        if(ch == c) continue;
+                        curr[i] = ch;
+                        if(us.find(curr) != us.end() && vis.find(curr) == vis.end()){
+                            q.push(curr);
+                        }
+                    }
+                    curr[i] = c;
+                }
+            }
+            steps++;
+        }
+        return 0;
+    }
+};
