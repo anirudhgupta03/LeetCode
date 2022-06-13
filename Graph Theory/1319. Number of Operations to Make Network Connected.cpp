@@ -51,7 +51,8 @@ public:
 };
 
 //Method - 2
-//Ref: https://leetcode.com/problems/number-of-operations-to-make-network-connected/discuss/717403/C%2B%2B-or-DFS-or-Number-of-Islands-or-Detailed-explanation
+//Ref1: https://leetcode.com/problems/number-of-operations-to-make-network-connected/discuss/717403/C%2B%2B-or-DFS-or-Number-of-Islands-or-Detailed-explanation
+//Ref2: https://www.youtube.com/watch?v=kEXU1nP54NM
 class Solution {
 public:
     void dfs(int node, vector<int> al[], vector<int> &vis){
@@ -93,5 +94,48 @@ public:
             }
         }
         return cc_count - 1;
+    }
+};
+
+//Method - 3
+class Solution {
+public:
+    void unionP(int node1, int node2, vector<int> &par){
+        par[node2] = node1;
+    }
+    int findP(int node, vector<int> &par){
+        if(par[node] == -1){
+            return node;
+        }
+        return par[node] = findP(par[node], par);
+    }
+    int makeConnected(int n, vector<vector<int>>& connections) {
+        
+        vector<int> par(n, -1);
+        
+        int extraCables = 0;
+        
+        for(int i = 0; i < connections.size(); i++){
+            int u = connections[i][0], v = connections[i][1];
+            int paru = findP(u, par);
+            int parv = findP(v, par);
+            if(paru != parv){
+                unionP(paru, parv, par);
+            }
+            else{
+                extraCables++;
+            }
+        }
+        int count = 0;
+        for(int i = 0; i < n; i++){
+            if(par[i] == -1){
+                count++;
+            }
+        }
+        count--;
+        if(extraCables >= count){
+            return count;
+        }
+        return -1;
     }
 };
