@@ -11,27 +11,19 @@
  */
 class Solution {
 public:
-    void dfs(TreeNode* root, int &maxValue, int &count){
-     
-        if(root == NULL){
-            return;
-        }
+    int count;
+    void solve(TreeNode* root, int maxVal){
         
-        int temp = maxValue;
-        maxValue = max(maxValue, root -> val);
-        if(root -> val == maxValue){
+        if(root == NULL) return;
+        if(maxVal <= root -> val){
             count++;
         }
-        dfs(root -> left, maxValue, count);
-        dfs(root -> right, maxValue, count);
-        maxValue = temp;
+        solve(root -> left, max(maxVal, root -> val));
+        solve(root -> right, max(maxVal, root -> val));
     }
     int goodNodes(TreeNode* root) {
-        
-        int count = 0;
-        int maxValue = INT_MIN;
-        
-        dfs(root, maxValue, count);
+        count = 0;
+        solve(root, INT_MIN);
         return count;
     }
 };
