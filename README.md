@@ -79,3 +79,18 @@ Steps:
  
 Problem: https://practice.geeksforgeeks.org/problems/minimum-spanning-tree/1<br/>
 Code: https://github.com/anirudhgupta03/GFG/blob/main/Graph/Minimum%20Spanning%20Tree%201.cpp<br/>
+
+## Floyd Warshall Algorithm
+#### Shortest Path Algorithm
+#### All Pairs Shortest Path
+
+Formula: d[i][j] = min(d[i][j], d[i][k] + d[k][j])
+
+#### Detect negative edge weight cycle
+If we have negative distance from a vertex it itself(eg from 0 to 0) then we have a negative edge weight cycle.
+#### TC: O(V*V*V)
+#### SC: O(V*V)
+#### Including adjacent node won't affect dist.
+
+Problem: https://practice.geeksforgeeks.org/problems/implementing-floyd-warshall2042/1/
+Code: https://github.com/anirudhgupta03/GFG/blob/main/Graph/Floyd%20Warshall.cpp
