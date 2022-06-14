@@ -1,3 +1,4 @@
+//Method - 1
 //https://leetcode.com/problems/course-schedule-iv/discuss/1535210/C%2B%2B-or-Kahn's-Algorithm-or-Short-and-simple-or-Explained
 class Solution {
 public:
@@ -38,9 +39,44 @@ public:
                 if(in[child] == 0) q.push(child);
             }
         }
-        
+
         for(int i = 0; i < queries.size(); i++){
             res[i] = table[queries[i][0]][queries[i][1]];
+        }
+        return res;
+    }
+};
+
+//Method - 2
+//Floyd Warshall Algorithm
+//Ref: https://www.youtube.com/watch?v=sYrCIA80c5c
+class Solution {
+public:
+    vector<bool> checkIfPrerequisite(int numCourses, vector<vector<int>>& prerequisites, vector<vector<int>>& queries) {
+        
+        vector<vector<int>> dist(numCourses, vector<int>(numCourses, INT_MAX));
+        
+        for(auto &x: prerequisites){
+            dist[x[0]][x[1]] = 1;
+        }
+        
+        for(int k = 0; k < numCourses; k++){
+            for(int i = 0; i < numCourses; i++){
+                for(int j = 0; j < numCourses; j++){
+                    if(dist[i][k] != INT_MAX && dist[k][j] != INT_MAX){
+                        dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
+                    }
+                }
+            }
+        }
+        vector<bool> res;
+        for(auto &x: queries){
+            if(dist[x[0]][x[1]] != INT_MAX){
+                res.push_back(true);
+            }
+            else{
+                res.push_back(false);
+            }
         }
         return res;
     }
