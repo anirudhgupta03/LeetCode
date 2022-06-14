@@ -1,3 +1,4 @@
+//Method - 1
 class Solution {
 public:
     #define pid pair<int,double>
@@ -70,6 +71,57 @@ public:
         
         if(probability[target] != -1){
             return probability[target];
+        }
+        return 0;
+    }
+};
+
+//Method - 2
+class Solution {
+public:
+    double frogPosition(int n, vector<vector<int>>& edges, int t, int target) {
+        
+        vector<int> al[n + 1];
+        
+        for(auto &x: edges){
+            al[x[0]].push_back(x[1]);
+            al[x[1]].push_back(x[0]);
+        }
+        
+        queue<pair<int,double>> q;
+        q.push({1,1.0});
+        
+        vector<int> vis(n + 1, 0);
+        
+        t++;
+        while(!q.empty() && t--){
+            int sz = q.size();
+            while(sz--){
+                int curr = q.front().first;
+                double prob = q.front().second;
+                q.pop();
+
+                vis[curr] = 1;
+                
+                int temp = al[curr].size() - 1;
+                if(curr == 1) temp++;
+                
+                if(curr == target){
+                    if(t == 0 || temp == 0){
+                        return prob;
+                    }
+                    else{
+                        return 0;
+                    }
+                }
+                
+                for(int i = 0; i < al[curr].size(); i++){
+                    int child = al[curr][i];
+                    if(vis[child] == 0){
+                        q.push({child, prob/temp});
+                    }
+                }
+            }
         }
         return 0;
     }
