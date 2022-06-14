@@ -88,7 +88,7 @@ Formula: d[i][j] = min(d[i][j], d[i][k] + d[k][j])
 
 #### Detect negative edge weight cycle
 If we have negative distance from a vertex it itself(eg from 0 to 0) then we have a negative edge weight cycle.
-#### TC: O(V * V* V)
+#### TC: O(V * V * V)
 #### SC: O(V*V)
 #### Including adjacent node won't affect dist.
 
