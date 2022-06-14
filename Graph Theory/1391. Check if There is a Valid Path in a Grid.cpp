@@ -1,3 +1,4 @@
+//Method - 1
 class Solution {
 public:
     int dx[4] = {-1,1,0,0};
@@ -106,7 +107,8 @@ public:
     }
 };
 
-//Using switch
+//Method - 2
+//Optimised Method - 1 Using switch
 class Solution {
 public:
     int dx[4] = {-1,1,0,0};
@@ -211,6 +213,84 @@ public:
             vector<vector<int>> vis(m, vector<int>(n, 0));
             flag = dfs(0, 0, i, grid, vis, m, n);
             if(flag) return true;
+        }
+        return false;
+    }
+};
+
+//Method - 3
+class Solution {
+public:
+    int dx[4] = {-1,1,0,0};
+    int dy[4] = {0,0,-1,1};
+    char dir[4] = {'U','D','L','R'};
+    #define pipii pair<int,pair<int,int>>
+    bool hasValidPath(vector<vector<int>>& grid) {
+        
+        int m = grid.size(), n = grid[0].size();
+        
+        if(m == 1 && n == 1){
+            return true;
+        }
+
+        queue<pipii> q;
+        
+        q.push({grid[0][0],{0,0}});
+        
+        int vis[7][m][n];
+        memset(vis,0,sizeof(vis));
+        
+        while(!q.empty()){
+            
+            int preMove = q.front().first, x = q.front().second.first, y = q.front().second.second;
+            q.pop();
+            
+            if(x == m - 1 && y == n - 1){
+                return true;
+            }
+            
+            if(vis[preMove][x][y]) continue;
+            vis[preMove][x][y] = 1;
+            
+            for(int i = 0; i < 4; i++){
+                
+                int xo = x + dx[i], yo = y + dy[i];
+                
+                if(xo >= 0 && yo >= 0 && xo < m && yo < n){
+                    int currMove = grid[xo][yo];
+                    if(vis[currMove][xo][yo]) continue;
+                         
+                    
+                    if(dir[i] == 'U'){
+                        if(preMove == 2 || preMove == 5 || preMove == 6){
+                            if(currMove == 2 || currMove == 3 || currMove == 4){
+                                q.push({currMove,{xo,yo}});
+                            }
+                        }
+                    }
+                    else if(dir[i] == 'D'){
+                        if(preMove == 2 || preMove == 3 || preMove == 4){
+                            if(currMove == 2 || currMove == 5 || currMove == 6){
+                                q.push({currMove,{xo,yo}});
+                            }
+                        }
+                    }
+                    else if(dir[i] == 'L'){
+                        if(preMove == 1 || preMove == 3 || preMove == 5){
+                            if(currMove == 1 || currMove == 4 || currMove == 6){
+                                q.push({currMove,{xo,yo}});
+                            }
+                        }
+                    }
+                    else if(dir[i] == 'R'){
+                        if(preMove == 1 || preMove == 4 || preMove == 6){
+                            if(currMove == 1 || currMove == 3 || currMove == 5){
+                                q.push({currMove,{xo,yo}});
+                            }
+                        }
+                    }
+                }
+            }
         }
         return false;
     }
