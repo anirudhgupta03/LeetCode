@@ -94,3 +94,18 @@ If we have negative distance from a vertex it itself(eg from 0 to 0) then we hav
 
 Problem: https://practice.geeksforgeeks.org/problems/implementing-floyd-warshall2042/1/<br/>
 Code: https://github.com/anirudhgupta03/GFG/blob/main/Graph/Floyd%20Warshall.cpp
+
+## DSU
+#### Video Ref1: https://www.youtube.com/watch?v=kaBX2s3pYO4
+#### Video Ref2: 
+#### Find: Path Compression TC: O(logN)
+#### Path Compression reduces the height of tree
+#### RANK of Tree remains the same
+#### It leads to O(logN) performan ce for Find & Union
+
+#### Why UNION by RANK and not UNION by HEIGHT?
+This is because initially RANK is same as height, but PATH COMPRESSION may change height but it's RANK remains same. 
+
+#### UNION of 2 set
+-> Having same RANK: RANK of new Absolute Parent increases by 1
+-> Having diff RANK: RANK doesn't change
