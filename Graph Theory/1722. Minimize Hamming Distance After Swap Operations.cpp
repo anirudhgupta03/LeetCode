@@ -35,13 +35,12 @@ public:
         }
         
         int count = 0;
-        map<int,unordered_map<int,int>> mp;
+        unordered_map<int,unordered_map<int,int>> mp;
         
         for(int i = 0; i < n; i++){
             mp[par[i]][source[i]]++;;
         }
-   
-        unordered_set<int> us;
+        
         for(int i = 0; i < n; i++){
             if(mp[par[i]][target[i]] != 0){
                 mp[par[i]][target[i]]--;
