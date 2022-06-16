@@ -147,3 +147,139 @@ public:
         return res;
     }
 };
+
+//Method - 3
+//Union by Path Compression
+class Solution {
+public:
+    int findP(int node, vector<int> &par){
+        if(par[node] == node){
+            return node;
+        }
+        return par[node] = findP(par[node], par);
+    }
+    vector<bool> friendRequests(int n, vector<vector<int>>& restrictions, vector<vector<int>>& requests) {
+        
+        vector<int> par(n);
+        
+        for(int i = 0; i < n; i++){
+            par[i] = i;
+        }
+        vector<bool> res(requests.size());
+        vector<int> tpar;
+        
+        for(int i = 0; i < requests.size(); i++){
+            
+            int u = requests[i][0], v = requests[i][1];
+            int paru = findP(u, par);
+            int parv = findP(v, par);
+            
+            if(paru == parv){
+                res[i] = true;
+                continue;
+            }
+            
+            par[parv] = paru;
+           
+            tpar = par;
+            for(int j = 0; j < n; j++){
+                tpar[j] = findP(j, tpar);
+            }
+            
+            bool flag = true;
+            for(int j = 0; j < restrictions.size(); j++){
+                int p = restrictions[j][0], q = restrictions[j][1];
+                if(tpar[p] == tpar[q]){
+                    flag = false;
+                    break;
+                }
+            }
+            
+            if(!flag){
+                par[parv] = parv;
+                res[i] = false;
+            }
+            else{
+                res[i] = true;
+            }
+        }
+        return res;
+    }
+};
+
+//Method - 4
+//Union by Rank and Path Compression
+class Solution {
+public:
+    int findP(int node, vector<int> &par){
+        if(par[node] == node){
+            return node;
+        }
+        return par[node] = findP(par[node], par);
+    }
+    vector<bool> friendRequests(int n, vector<vector<int>>& restrictions, vector<vector<int>>& requests) {
+        
+        vector<int> par(n), rank(n, 0);
+        
+        for(int i = 0; i < n; i++){
+            par[i] = i;
+        }
+        vector<bool> res(requests.size());
+        vector<int> tpar;
+        
+        for(int i = 0; i < requests.size(); i++){
+            
+            int u = requests[i][0], v = requests[i][1];
+            int paru = findP(u, par);
+            int parv = findP(v, par);
+            
+            if(paru == parv){
+                res[i] = true;
+                continue;
+            }
+            bool flag1 = false, flag2 = false, flag3 = false;
+            if(rank[paru] > rank[parv]){
+                par[parv] = paru;
+                flag1 = true;
+            }
+            else if(rank[parv] > rank[paru]){
+                par[paru] = parv;
+                flag2 = true;
+            }
+            else{
+                par[parv] = paru;
+                rank[parv]++;
+                flag3 = true;
+            }
+           
+            tpar = par;
+            for(int j = 0; j < n; j++){
+                int ele = findP(j, tpar);
+                tpar[j] = ele;
+            }
+            
+            bool flag = true;
+            for(int j = 0; j < restrictions.size(); j++){
+                int p = restrictions[j][0], q = restrictions[j][1];
+                if(tpar[p] == tpar[q]){
+                    flag = false;
+                    break;
+                }
+            }
+            
+            if(!flag){
+                if(flag1) par[parv] = parv;
+                else if(flag2) par[paru] = paru;
+                else if(flag3){
+                    par[parv] = parv;
+                    rank[parv]--;
+                }
+                res[i] = false;
+            }
+            else{
+                res[i] = true;
+            }
+        }
+        return res;
+    }
+};
