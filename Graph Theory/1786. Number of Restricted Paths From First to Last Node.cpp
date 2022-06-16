@@ -1,4 +1,5 @@
 //Ref: https://www.youtube.com/watch?v=-wNfD38uYJU
+//Method - 1
 class Solution {
 public:
     #define ll long long
@@ -77,5 +78,67 @@ public:
         vector<ll> dp(n + 1, -1);
         
         return solve(1, n, dist, vis, al, dp);
+    }
+};
+
+//Method - 2
+class Solution {
+public:
+    #define pipii pair<int,pair<int,int>>
+    #define pii pair<int,int>
+    #define mod 1000000007
+    #define ll long long
+    struct cmp{
+      bool operator()(pii &p1, pii &p2){
+          return p1.second > p2.second;
+      }  
+    };
+    ll dfs(int node, int par, vector<pair<int,int>> al[], vector<int> &dist, vector<ll> &dp){
+        
+        if(node == dist.size() - 1){
+            return 1;
+        }
+        if(dp[node] != -1){
+            return dp[node];
+        }
+        ll count = 0;
+        for(int i = 0; i < al[node].size(); i++){
+            int child = al[node][i].first;
+            if(child != par && dist[child] < dist[node]){
+                count = (count + dfs(child, node, al, dist, dp)) % mod;
+            }
+        }
+        return dp[node] = count;
+    }
+    int countRestrictedPaths(int n, vector<vector<int>>& edges) {
+        
+        vector<pair<int,int>> al[n + 1];
+        
+        for(auto &x: edges){
+            al[x[0]].push_back({x[1], x[2]});
+            al[x[1]].push_back({x[0], x[2]});
+        }
+        
+        vector<int> dist(n + 1, INT_MAX);
+        
+        priority_queue<pii, vector<pii>, cmp> pq;
+        pq.push({n, 0});
+        dist[n] = 0;
+        
+        while(!pq.empty()){
+            
+            int curr = pq.top().first, distance = pq.top().second;
+            pq.pop();
+            
+            for(int i = 0; i < al[curr].size(); i++){
+                int child = al[curr][i].first, d = al[curr][i].second;
+                if(dist[curr] + d < dist[child]){
+                    dist[child] = dist[curr] + d;
+                    pq.push({child, dist[child]});
+                }
+            }
+        }
+        vector<ll> dp(n + 1, -1);
+        return dfs(1, -1, al, dist, dp);
     }
 };
