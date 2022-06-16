@@ -1,3 +1,4 @@
+//Method - 1
 class Solution {
 public:
     #define ll long long
@@ -51,6 +52,52 @@ public:
         int count = 0;
         for(int i = 0; i < n; i++){
             if(scores[i] == maxfreq) count++;
+        }
+        return count;
+    }
+};
+
+//Method - 2
+class Solution {
+public:
+    #define ll long long
+    ll solve(int node, int par, vector<int> al[], vector<ll> &score){
+        
+        ll tscore = 1, elements = 1;
+        for(int i = 0; i < al[node].size(); i++){
+            int child = al[node][i];
+            if(child != par){
+                ll temp = solve(child, par, al, score);
+                if(temp) tscore *= temp;
+                elements += temp;
+            }
+        }
+        if(score.size() - elements){
+            tscore *= (score.size() - elements);
+        }
+        score[node] = tscore;
+        return elements;
+    }
+    int countHighestScoreNodes(vector<int>& parents) {
+        
+        int n = parents.size();
+        
+        vector<int> al[n];
+        
+        for(int i = 0; i < n; i++){
+            if(parents[i] == -1) continue;
+            al[parents[i]].push_back(i);
+        }
+        
+        vector<ll> score(n);
+        
+        solve(0, -1, al, score);
+        
+        ll highestScore = *max_element(score.begin(), score.end());
+        
+        int count = 0;
+        for(int i = 0; i < n; i++){
+            if(score[i] == highestScore) count++;
         }
         return count;
     }
