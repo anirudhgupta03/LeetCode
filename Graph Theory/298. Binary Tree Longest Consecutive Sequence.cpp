@@ -1,4 +1,5 @@
-//Ref: https://www.lintcode.com/problem/595/
+//https://www.lintcode.com/problem/595/
+//Method - 1
 /**
  * Definition of TreeNode:
  * class TreeNode {
@@ -69,5 +70,63 @@ public:
         int maxLen = 1;
         solve(root, maxLen);
         return maxLen;
+    }
+};
+
+//Method - 2
+/**
+ * Definition of TreeNode:
+ * class TreeNode {
+ * public:
+ *     int val;
+ *     TreeNode *left, *right;
+ *     TreeNode(int val) {
+ *         this->val = val;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ */
+
+class Solution {
+public:
+    /**
+     * @param root: the root of binary tree
+     * @return: the length of the longest consecutive sequence path
+     */
+    pair<int,int> solve(TreeNode* root, int &len){
+
+        if(root == NULL){
+            return {-1,0};
+        }
+        if(root -> left == NULL && root -> right == NULL){
+            return {root -> val, 1};
+        }
+
+        pair<int,int> l = solve(root -> left, len);
+        pair<int,int> r = solve(root -> right, len);
+
+        if((r.first == root -> val + 1) && (l.first == root -> val + 1)){
+            len = max(len, max(l.second, r.second) + 1);
+            return {root -> val, max(l.second, r.second) + 1};
+        }
+        else if(r.first == root -> val + 1){
+            len = max(len, r.second + 1);
+            return {root -> val, r.second + 1};
+        }
+        else if(l.first == root -> val + 1){
+            len = max(len, l.second + 1);
+            return {root -> val, l.second + 1};
+        }
+        else{
+            return {root -> val, 1};
+        }
+    }
+    int longestConsecutive(TreeNode *root) {
+        if(root == NULL){
+            return 0;
+        }
+        int len = 1;
+        solve(root, len);
+        return len;
     }
 };
