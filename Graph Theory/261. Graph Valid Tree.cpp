@@ -1,3 +1,5 @@
+//https://www.lintcode.com/problem/178/
+//https://www.codingninjas.com/codestudio/problems/graph-valid-tree_1376618?leftPanelTab=0
 class Solution {
 public:
     /**
