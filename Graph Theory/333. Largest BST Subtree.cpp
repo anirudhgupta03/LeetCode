@@ -51,3 +51,63 @@ class Solution{
         return maxSize;
     }
 };
+
+//https://www.codingninjas.com/codestudio/problems/largest-bst-subtree_893103?leftPanelTab=0
+/************************************************************
+
+    Following is the Binary Tree node structure
+    
+    template <typename T>
+    class TreeNode {
+        public :
+        T data;
+        TreeNode<T> *left;
+        TreeNode<T> *right;
+
+        TreeNode(T data) {
+            this -> data = data;
+            left = NULL;
+            right = NULL;
+        }
+
+        ~TreeNode() {
+            if(left)
+                delete left;
+            if(right)
+                delete right;
+        }
+    };
+
+************************************************************/
+#include<bits/stdc++.h>
+using namespace std;
+int largest;
+vector<int> solve(TreeNode<int>* root){
+    
+    if(root == NULL){
+        return {1,0,INT_MAX,INT_MIN};    //MIN VALUE, MAX VALUE
+    }
+    if(root -> left == NULL && root -> right == NULL){
+        return {1,1,root -> data ,root -> data};
+    }
+    
+    vector<int> l = solve(root -> left);
+    vector<int> r = solve(root -> right);
+    
+    if(l[0] && r[0] && (l[3] < root -> data) && (r[2] > root -> data)){
+        largest = max(largest, 1 + l[1] + r[1]);
+        return {1, 1 + l[1] + r[1], min(l[2], root -> data), max(r[3], root -> data)};
+    }
+    else{
+        return {0, 0, INT_MAX, INT_MIN};
+    }
+}
+int largestBST(TreeNode<int>* root) 
+{
+    if(root == NULL){
+        return 0;
+    }
+    largest = 1;
+    solve(root);
+    return largest;
+}
