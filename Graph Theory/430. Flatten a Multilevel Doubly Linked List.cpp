@@ -1,3 +1,4 @@
+//Method - 1
 /*
 // Definition for a Node.
 class Node {
@@ -52,5 +53,53 @@ public:
         Node* start = head;
         solve(NULL, start);
         return start;
+    }
+};
+
+//Method - 2
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* prev;
+    Node* next;
+    Node* child;
+};
+*/
+
+class Solution {
+public:
+    pair<Node*, Node*> solve(Node* head){
+        
+        if(head == NULL){
+            return {NULL,NULL};
+        }
+        
+        Node* temp = head -> next;
+        if(head -> child){
+            pair<Node*, Node*> p = solve(head -> child);
+            Node* start = p.first, *end = p.second;
+            
+            head -> child = NULL;
+            head -> next = start;
+            start -> prev = head;
+            
+            end -> next = temp;
+            if(temp) temp -> prev = end;
+            else{
+                return {head, end};
+            }
+        }
+        pair<Node*,Node*> p = solve(temp);
+        if(p.second == NULL) return {head, head};
+        return {head, p.second};
+    }
+    Node* flatten(Node* head) {
+        
+        if(head == NULL){
+            return NULL;
+        }
+        return solve(head).first;
     }
 };
