@@ -1,3 +1,5 @@
+//Method - 1
+//Using DFS
 class Solution {
 public:
     #define pii pair<int,int>
@@ -59,6 +61,75 @@ public:
                 if(v[i][j].first == 1 && v[i][j].second == 2){
                     vector<int> temp = {i,j};
                     res.push_back(temp);
+                }
+            }
+        }
+        return res;
+    }
+};
+
+//Method - 2
+//Using BFS
+class Solution {
+public:
+    int dx[4] = {-1,1,0,0};
+    int dy[4] = {0,0,-1,1};
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+        
+        int m = heights.size(), n = heights[0].size();
+        
+        vector<vector<int>> pacific(m, vector<int>(n, 0)), atlantic(m, vector<int>(n, 0));
+        
+        queue<pair<int,int>> q;
+        
+        for(int i = 0; i < m; i++){
+            q.push({i, 0});
+        }
+        for(int j = 1; j < n; j++){
+            q.push({0, j});
+        }
+        
+        while(!q.empty()){
+            int x = q.front().first, y = q.front().second;
+            q.pop();
+            
+            pacific[x][y] = 1;
+            
+            for(int i = 0; i < 4; i++){
+                int xo = x + dx[i], yo = y + dy[i];
+                if(xo >= 0 && yo >= 0 && xo < m && yo < n && pacific[xo][yo] == 0 && heights[xo][yo] >= heights[x][y]){
+                    q.push({xo, yo});
+                }
+            }
+        }
+        
+        for(int i = 0; i < m; i++){
+            q.push({i, n - 1});
+        }
+        for(int j = 0; j < n - 1; j++){
+            q.push({m - 1, j});
+        }
+        
+        while(!q.empty()){
+            int x = q.front().first, y = q.front().second;
+            q.pop();
+            
+            atlantic[x][y] = 1;
+            
+            for(int i = 0; i < 4; i++){
+                int xo = x + dx[i], yo = y + dy[i];
+                if(xo >= 0 && yo >= 0 && xo < m && yo < n && atlantic[xo][yo] == 0 && heights[xo][yo] >= heights[x][y]){
+                    q.push({xo, yo});
+                }
+            }
+        }
+        
+        vector<vector<int>> res;
+        
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(atlantic[i][j] && pacific[i][j]){
+                    res.push_back({i,j});
                 }
             }
         }
