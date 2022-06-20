@@ -1,3 +1,5 @@
+//Method - 1
+//Using BFS
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -52,6 +54,47 @@ public:
                 que.push({curr -> right,{r + 1, c + pow(2, level - r - 2)}});
             }
         }
+        return res;
+    }
+};
+
+//Method - 2
+//Using DFS
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int findHeight(TreeNode* root){
+        if(root == NULL){
+            return 0;
+        }
+        return 1 + max(findHeight(root -> left), findHeight(root -> right));
+    }
+    void solve(TreeNode* root, int r, int c, int ht, vector<vector<string>> &res){
+        if(root == NULL){
+            return;
+        }
+        res[r][c] = to_string(root -> val);
+        if(root -> left) solve(root -> left, r + 1, c - (1 << (ht - r - 1)), ht, res);
+        if(root -> right) solve(root -> right, r + 1, c + (1 << (ht - r - 1)), ht, res);
+    }
+    vector<vector<string>> printTree(TreeNode* root) {
+        
+        int ht = findHeight(root);
+        int m = ht;
+        int n = (1 << ht) - 1;
+        
+        vector<vector<string>> res(m, vector<string>(n,""));
+        solve(root, 0, n/2, ht - 1, res);
         return res;
     }
 };
