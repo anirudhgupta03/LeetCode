@@ -1,3 +1,5 @@
+//Method - 1
+//Using BFS
 /*
 // Definition for Employee.
 class Employee {
@@ -34,6 +36,35 @@ public:
                         }
                     }
                     break;
+                }
+            }
+        }
+        return totalImportance;
+    }
+};
+
+//Method - 2
+//Using DFS
+/*
+// Definition for Employee.
+class Employee {
+public:
+    int id;
+    int importance;
+    vector<int> subordinates;
+};
+*/
+class Solution {
+public:
+    int getImportance(vector<Employee*> employees, int id) {
+        
+        int totalImportance = 0;
+        
+        for(auto &x: employees){
+            if(x -> id == id){
+                totalImportance += x -> importance;
+                for(auto &y: x -> subordinates){
+                    totalImportance += getImportance(employees, y);
                 }
             }
         }
