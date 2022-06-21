@@ -1,4 +1,5 @@
 //Using Dijkstra
+//Method - 1
 class Solution {
 public:
     #define pii pair<int,int>
@@ -52,5 +53,54 @@ public:
             maxTime = max(maxTime, timetaken[i]);
         }
         return maxTime;
+    }
+};
+
+//Method - 2 
+class Solution {
+public:
+    #define pii pair<int,int>
+    struct cmp{
+      bool operator()(pii &p1, pii &p2){
+          return p1.second > p2.second;
+      }  
+    };
+    int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+        
+        priority_queue<pii, vector<pii>, cmp> pq;
+        
+        pq.push({k, 0});
+        
+        vector<pii> al[n + 1];
+        
+        for(auto &x: times){
+            al[x[0]].push_back({x[1], x[2]});
+        }
+        
+        vector<int> vis(n + 1, 0);
+        int minTime = 0;
+        
+        while(!pq.empty()){
+            
+            int curr = pq.top().first, timetaken = pq.top().second;
+            pq.pop();
+            
+            if(vis[curr]) continue;
+            vis[curr] = 1;
+            
+            minTime = max(minTime, timetaken);
+            
+            for(int i = 0; i < al[curr].size(); i++){
+                int child = al[curr][i].first, t = al[curr][i].second;
+                if(vis[child] == 0){
+                    pq.push({child, timetaken + t});
+                }
+            }
+        }
+        
+        for(int i = 1; i <= n; i++){
+            if(vis[i] == 0) return -1;
+        }
+        return minTime;
     }
 };
