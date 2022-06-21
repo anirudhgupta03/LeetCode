@@ -187,3 +187,39 @@ public:
 };
 
 //Another Approach - https://www.geeksforgeeks.org/find-the-number-of-distinct-islands-in-a-2d-matrix/
+class Solution {
+public:
+    /**
+     * @param grid: a list of lists of integers
+     * @return: return an integer, denote the number of distinct islands
+     */
+    int dx[4] = {-1,1,0,0};
+    int dy[4] = {0,0,-1,1};
+    void dfs(int x, int y, int basex, int basey, vector<pair<int,int>> &path, vector<vector<int>> &grid){
+
+        path.push_back({x - basex, y - basey});
+        grid[x][y] = 0;
+
+        for(int i = 0; i < 4; i++){
+            int xo = x + dx[i], yo = y + dy[i];
+            if(xo >= 0 && yo >= 0 && xo < grid.size() && yo < grid[0].size() && grid[xo][yo]){
+                dfs(xo, yo, basex, basey, path, grid);
+            }
+        }
+    }
+    int numberofDistinctIslands(vector<vector<int>> &grid) {
+        
+        set<vector<pair<int,int>>> islands;
+
+        for(int i = 0; i < grid.size(); i++){
+            for(int j = 0; j < grid[0].size(); j++){
+                if(grid[i][j]){
+                    vector<pair<int,int>> path;
+                    dfs(i, j, i, j, path, grid);
+                    islands.insert(path);
+                }
+            }
+        }
+        return islands.size();
+    }
+};
