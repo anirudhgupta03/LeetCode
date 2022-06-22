@@ -1,43 +1,35 @@
 class Solution {
 public:
-    int dx[4] = {0,0,-1,1};
-    int dy[4] = {1,-1,0,0};
-    void search(int ind, int x, int y, vector<vector<char>> &board, bool &flag, vector<vector<int>> &vis, string &temp, string &word){
+    int dx[4] = {-1,1,0,0};
+    int dy[4] = {0,0,-1,1};
+    bool dfs(int ind, int x, int y, vector<vector<char>> &board, vector<vector<int>> &vis, string &word){
         
-        if(temp == word){
-            flag = true;
-            return;
+        if(ind == word.size()){
+            return true;
         }
         
         for(int i = 0; i < 4; i++){
             int xo = x + dx[i], yo = y + dy[i];
-            if(xo >= 0 && xo < board.size() && yo >= 0 && yo < board[0].size() && vis[xo][yo] == 0 && board[xo][yo] == word[ind]){
-                temp.push_back(board[xo][yo]);
+            if(xo >= 0 && yo >= 0 && xo < board.size() && yo < board[0].size() && board[xo][yo] == word[ind] && vis[xo][yo] == 0){
                 vis[xo][yo] = 1;
-                search(ind+1,xo,yo,board,flag,vis,temp,word);
-                temp.pop_back();
+                bool flag = dfs(ind + 1, xo, yo, board, vis, word);
+                if(flag) return true;
                 vis[xo][yo] = 0;
             }
         }
+        return false;
     }
     bool exist(vector<vector<char>>& board, string word) {
         
         int m = board.size(), n = board[0].size();
         
-        for(int i = 0; i < board.size(); i++){
-            for(int j = 0; j < board[0].size(); j++){
-              
-                if(word[0] == board[i][j]){
-                    bool flag = false;
-                    vector<vector<int>> vis(m,vector<int>(n,0));
-                    string temp;
-                    temp.push_back(word[0]);
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(board[i][j] == word[0]){
+                    vector<vector<int>> vis(m, vector<int>(n, 0));
                     vis[i][j] = 1;
-                    search(1,i,j,board,flag,vis,temp,word);
-                    
-                    if(flag){
-                        return true;
-                    }
+                    bool flag = dfs(1, i, j, board, vis, word);
+                    if(flag) return true;
                 }
             }
         }
