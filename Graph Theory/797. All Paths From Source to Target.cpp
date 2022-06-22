@@ -1,31 +1,21 @@
 class Solution {
 public:
-    void solve(int n, int node, vector<int> &temp, vector<vector<int>> &res, vector<vector<int>> &graph, vector<int> &vis){
-        
-        if(node == n - 1){
-            res.push_back(temp);
+    void solve(int ind, vector<int> &path, vector<vector<int>> &allpath, vector<vector<int>> &graph){
+        if(ind == graph.size() - 1){
+            allpath.push_back(path);
             return;
         }
-        for(int i = 0; i < graph[node].size(); i++){
-            int child = graph[node][i];
-            if(vis[child] == 0){
-                vis[child] = 1;
-                temp.push_back(child);
-                solve(n, child, temp, res, graph, vis);
-                temp.pop_back();
-                vis[child] = 0;
-            }
+        for(auto &x: graph[ind]){
+            path.push_back(x);
+            solve(x, path, allpath, graph);
+            path.pop_back();
         }
     }
     vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& graph) {
-        
-        vector<vector<int>> res;
-        vector<int> temp;
-        
-        temp.push_back(0);
-        vector<int> vis(graph.size(), 0);
-        vis[0] = 1;
-        solve(graph.size(), 0, temp, res, graph, vis);
-        return res;
+        vector<int> path;
+        vector<vector<int>> allpath;
+        path.push_back(0);
+        solve(0, path, allpath, graph);
+        return allpath;
     }
 };
