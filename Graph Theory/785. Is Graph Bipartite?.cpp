@@ -1,3 +1,4 @@
+//Method - 1
 class Solution {
 public:
     bool dfs(int node, int color, vector<int> &vis, vector<int> &col, vector<vector<int>> &graph){
@@ -33,6 +34,45 @@ public:
                 if(!flag){
                     return false;
                 }
+            }
+        }
+        return true;
+    }
+};
+
+//Method - 2
+class Solution {
+public:
+    bool check(int node, int col, int parent, vector<int> &color, vector<vector<int>> &graph){
+        
+        color[node] = col;
+        
+        for(int i = 0; i < graph[node].size(); i++){
+            int child = graph[node][i];
+            if(child == parent) continue;
+            
+            if(color[child] != -1){
+                if(color[child] == color[node]){
+                    return false;
+                }
+            }
+            else{
+                bool flag = check(child, 1 - col, node, color, graph);
+                if(!flag) return false;
+            }
+        }
+        return true;
+    }
+    bool isBipartite(vector<vector<int>>& graph) {
+        
+        int n = graph.size();
+    
+        vector<int> color(n, -1);
+        
+        for(int i = 0; i < n; i++){
+            if(color[i] == -1){
+                bool flag = check(i, 1, -1, color, graph);
+                if(!flag) return false;
             }
         }
         return true;
