@@ -43,13 +43,12 @@ public:
 //Method - 2
 class Solution {
 public:
-    bool check(int node, int col, int parent, vector<int> &color, vector<vector<int>> &graph){
+    bool check(int node, int col, vector<int> &color, vector<vector<int>> &graph){
         
         color[node] = col;
         
         for(int i = 0; i < graph[node].size(); i++){
             int child = graph[node][i];
-            if(child == parent) continue;
             
             if(color[child] != -1){
                 if(color[child] == color[node]){
@@ -57,7 +56,7 @@ public:
                 }
             }
             else{
-                bool flag = check(child, 1 - col, node, color, graph);
+                bool flag = check(child, 1 - col, color, graph);
                 if(!flag) return false;
             }
         }
@@ -71,7 +70,7 @@ public:
         
         for(int i = 0; i < n; i++){
             if(color[i] == -1){
-                bool flag = check(i, 1, -1, color, graph);
+                bool flag = check(i, 1, color, graph);
                 if(!flag) return false;
             }
         }
