@@ -65,3 +65,66 @@ public:
         return -1;
     }
 };
+
+//Multi-Source BFS
+class Solution {
+public:
+    int dx[4] = {-1,1,0,0};
+    int dy[4] = {0,0,-1,1};
+    void dfs(int x, int y, vector<vector<int>> &grid, queue<pair<int,int>> &q){
+        
+        grid[x][y] = 2;
+        q.push({x, y});
+        for(int i = 0; i < 4; i++){
+            int xo = x + dx[i], yo = y + dy[i];
+            if(xo >= 0 && yo >= 0 && xo < grid.size() && yo < grid[0].size() && grid[xo][yo] == 1){
+                dfs(xo, yo, grid, q);
+            }
+        }
+    }
+    int shortestBridge(vector<vector<int>>& grid) {
+        
+        int n = grid.size();
+        queue<pair<int,int>> q;
+        
+        for(int i = 0; i < n; i++){
+            bool flag = false;
+            for(int j = 0; j < n; j++){
+                if(grid[i][j]){
+                    flag = true;
+                    dfs(i, j, grid, q);
+                    if(flag) break;
+                }
+            }
+            if(flag) break;
+        }
+        
+        vector<vector<int>> vis(n, vector<int>(n, 0));
+        
+        int steps = 0;
+        while(!q.empty()){
+            int sz = q.size();
+            while(sz--){
+                int x = q.front().first, y = q.front().second;
+                q.pop();
+                
+                if(vis[x][y]) continue;
+                vis[x][y] = 1;
+                
+                for(int i = 0; i < 4; i++){
+                    int xo = x + dx[i], yo = y + dy[i];
+                    if(xo >= 0 && yo >= 0 && xo < grid.size() && yo < grid[0].size()){
+                        if(grid[xo][yo] == 0 && vis[xo][yo] == 0){
+                            q.push({xo, yo});
+                        }
+                        else if(grid[xo][yo] == 1){
+                            return steps;
+                        }
+                    }
+                }
+            }
+            steps++;
+        }
+        return 0;
+    }
+};
