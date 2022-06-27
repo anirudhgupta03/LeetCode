@@ -1,3 +1,4 @@
+//Method - 1
 class Solution {
 public:
     int snakesAndLadders(vector<vector<int>>& board) {
@@ -57,5 +58,69 @@ public:
         }
         
         return dist[n*n-1];
+    }
+};
+
+//Method - 2
+class Solution {
+public:
+    int snakesAndLadders(vector<vector<int>>& board) {
+        
+        int n = board.size();
+        
+        vector<int> grid(n*n + 1);
+        int ind = 1;
+        
+        bool flag = true;
+        
+        for(int i = n - 1; i >= 0; i--){
+            if(flag){
+                for(int j = 0; j < n; j++){
+                    grid[ind] = board[i][j];
+                    ind++;
+                }
+            }
+            else{
+                for(int j = n - 1; j >= 0; j--){
+                    grid[ind] = board[i][j];
+                    ind++;
+                }
+            }
+            flag = !flag;
+        }
+        
+        queue<int> q;
+        q.push(1);
+        
+        vector<int> vis(n*n + 1, 0);
+        int steps = 0;
+        
+        while(!q.empty()){
+            int sz = q.size();
+            while(sz--){
+                int curr = q.front();
+                q.pop();
+                
+                if(curr == n*n){
+                    return steps;
+                }
+                if(vis[curr]) continue;
+                vis[curr] = 1;
+                
+                for(int j = 1; j <= 6; j++){
+                    int ncurr = curr + j;
+                    if(ncurr <= n*n){
+                        if(grid[ncurr] != -1){
+                            q.push(grid[ncurr]);
+                        }
+                        else{
+                            q.push(ncurr);
+                        }
+                    }
+                }
+            }
+            steps++;
+        }
+        return -1;
     }
 };
