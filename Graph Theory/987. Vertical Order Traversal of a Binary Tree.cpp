@@ -1,3 +1,4 @@
+//Method - 1
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -52,6 +53,63 @@ public:
             for(auto &y: v)
             temp.push_back(y.first);
             res.push_back(temp);
+        }
+        return res;
+    }
+};
+
+//Method - 2
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+        
+        vector<vector<int>> res;
+        
+        if(root == NULL){
+            return res;
+        }
+        
+        queue<pair<TreeNode*,int>> q;
+        q.push({root, 0});
+        
+        map<int,vector<int>> mp;
+        
+        while(!q.empty()){
+            int sz = q.size();
+            unordered_map<int,map<int,int>> umap;
+            while(sz--){
+                TreeNode* curr = q.front().first;
+                int level = q.front().second;
+                
+                q.pop();
+                
+                umap[level][curr -> val]++;
+                
+                if(curr -> left) q.push({curr -> left, level - 1});
+                if(curr -> right) q.push({curr -> right, level + 1});
+            }
+            for(auto &x: umap){
+                for(auto &y: x.second){
+                    for(int i = 0; i < y.second; i++){
+                        mp[x.first].push_back(y.first);
+                    }
+                }
+            }
+        }
+        
+        for(auto &x: mp){
+            res.push_back(x.second);
         }
         return res;
     }
