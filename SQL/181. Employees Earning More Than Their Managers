@@ -1,0 +1,8 @@
+//Method - 1
+SELECT e.name as Employee FROM Employee as e 
+where e.managerId = (SELECT d.id FROM Employee as d WHERE e.managerId = d.id AND e.salary > d.salary)
+
+//Method - 2
+select E1.Name as Employee
+from Employee as E1, Employee as E2 
+where E1.ManagerId = E2.Id and E1.Salary > E2.Salary
