@@ -144,3 +144,59 @@ public:
         return dp[n - 1][1];
     }
 };
+
+//Top-Down 
+class Solution {
+public:
+    int dp[5001][2];
+    int solve(int ind, int flag, vector<int> &prices){
+        
+        if(ind >= prices.size()){
+            return 0;
+        }
+        if(dp[ind][flag] != -1){
+            return dp[ind][flag];
+        }
+        
+        if(flag == 0){
+            int profit = max(solve(ind + 1, 1, prices) - prices[ind], solve(ind + 1, 0, prices));
+            return dp[ind][flag] = profit;
+        }
+        else{
+            int profit = max(solve(ind + 2, 0, prices) + prices[ind], solve(ind + 1, 1, prices));
+            return dp[ind][flag] = profit;
+        }
+    }
+    int maxProfit(vector<int>& prices) {
+        
+        memset(dp, -1, sizeof(dp));
+        return solve(0, 0, prices);
+    }
+};
+
+//Bottom-Up
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        
+        memset(dp, -1, sizeof(dp));
+        return solve(0, 0, prices);
+        
+        int n = prices.size();
+        
+        int dp[n + 2][2];
+        memset(dp, 0, sizeof(dp));
+        
+        for(int ind = n - 1; ind >= 0; ind--){
+            for(int flag = 0; flag <= 1; flag++){
+                if(flag == 0){
+                    dp[ind][flag] = max(dp[ind + 1][1] - prices[ind], dp[ind + 1][0]);
+                }
+                else{
+                    dp[ind][flag] = max(solve(ind + 2, 0, prices) + prices[ind], solve(ind + 1, 1, prices));
+                }
+            }
+        }
+        return dp[0][0];
+    }
+};
