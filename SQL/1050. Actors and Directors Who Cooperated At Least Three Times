@@ -1,4 +1,5 @@
+//Ref: https://www.youtube.com/watch?v=ZL-i7o-JPi0
 SELECT ACTOR_ID, DIRECTOR_ID
 FROM ActorDirector
 GROUP BY actor_id, director_id
-HAVING COUNT(*) > 2
+HAVING COUNT(timestamp) >= 3
