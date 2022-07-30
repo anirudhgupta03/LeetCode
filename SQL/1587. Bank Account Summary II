@@ -1,0 +1,21 @@
+//Method - 1
+//Ref: https://www.youtube.com/watch?v=RjabLgrQN5Y
+# Write your MySQL query statement below
+with cte AS(
+    SELECT account, SUM(amount) as total
+    FROM Transactions
+    GROUP BY account
+)
+SELECT Users.name, cte.total AS balance FROM Users
+LEFT JOIN
+cte
+ON Users.account = cte.account
+WHERE cte.total > 10000;
+
+//Method - 2
+# Write your MySQL query statement below
+SELECT u.name as name , SUM(t.amount) as balance 
+FROM 
+USERS u JOIN TRANSACTIONS t on u.account=t.account
+GROUP BY 
+t.ACCOUNT HAVING balance>10000;
