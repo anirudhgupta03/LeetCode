@@ -1,3 +1,4 @@
+//Ref: https://www.youtube.com/watch?v=mSh7NS_zoJE
 # Write your MySQL query statement below
 SELECT * FROM(
 SELECT product_id, 'store1' as store, store1 as price FROM Products
