@@ -1,6 +1,16 @@
+//Method - 1
 # Write your MySQL query statement below
 
 SELECT customer_number FROM Orders
 GROUP BY customer_number 
 ORDER BY COUNT(*) DESC
 LIMIT 1;
+
+//Method - 2
+# Write your MySQL query statement below
+WITH cte AS(SELECT customer_number, COUNT(order_number) as torders
+FROM Orders
+GROUP BY customer_number)
+
+SELECT customer_number FROM cte
+WHERE torders = (SELECT MAX(torders) FROM cte);
