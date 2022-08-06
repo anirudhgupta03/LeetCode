@@ -1,3 +1,49 @@
+//Top-Down
+class Solution {
+public:
+    bool solve(int i, int j, string &s, string &p, vector<vector<int>> &dp){
+        
+        if(i == 0 && j == 0){
+            return true;
+        }
+        if(j == 0){
+            return false;
+        }
+        if(i == 0){
+            if(p[j - 1] == '*'){
+                return solve(i, j - 2, s, p, dp);
+            }
+            else{
+                return false;
+            }
+        }
+        
+        if(dp[i][j] != -1){
+            return dp[i][j];
+        }
+        if(p[j - 1] == '*'){
+            bool flag = solve(i, j - 2, s, p, dp);
+            if(s[i - 1] == p[j - 2] || p[j - 2] == '.'){
+                flag |= solve(i - 1, j, s, p, dp);
+            }
+            return dp[i][j] = flag;
+        }
+        if(s[i - 1] == p[j - 1] || p[j - 1] == '.'){
+            return dp[i][j] = solve(i - 1, j - 1, s, p, dp);
+        }
+        return dp[i][j] = false;
+    }
+    bool isMatch(string s, string p) {
+        
+        int len1 = s.size(), len2 = p.size();
+        
+        vector<vector<int>> dp(len1 + 1, vector<int>(len2 + 1, -1));
+        
+        return solve(len1, len2, s, p, dp);
+    }
+};
+
+//Bottom-Up
 class Solution {
 public:
     bool isMatch(string s, string p) {
@@ -43,7 +89,6 @@ public:
                 }
             }
         }
-        
         return dp[n][m];
     }
 };
