@@ -1,3 +1,94 @@
+//Top-Down
+//TC: O(n*2*2)
+//SC: O(n*2*2) + Auxilliary Stack Space
+class Solution {
+public:
+    int solve(int ind, int flag, int count, vector<int> &prices, vector<vector<vector<int>>> &dp){
+        
+        if(count == 2 || ind == prices.size()){
+            return 0;
+        }
+        
+        if(dp[ind][flag][count] != -1){
+            return dp[ind][flag][count];
+        }
+        if(flag){
+            return dp[ind][flag][count] = max(-prices[ind] + solve(ind + 1, 0, count, prices, dp), solve(ind + 1, 1, count, prices, dp));
+        }
+        else{
+            return dp[ind][flag][count] = max(solve(ind + 1, 1, count + 1, prices, dp) + prices[ind], solve(ind + 1, 0, count, prices, dp));
+        }
+    }
+    int maxProfit(vector<int>& prices) {
+        
+        int n = prices.size();
+        vector<vector<vector<int>>> dp(n, vector<vector<int>>(2, vector<int>(2,-1)));
+        
+        return solve(0, 1, 0, prices, dp);
+    }
+};
+
+//Bottom-Up
+//TC: O(n*2*3)
+//SC: O(n*2*3)
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        
+        int n = prices.size();
+        vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(3,0)));
+        
+        for(int ind = n; ind >= 0; ind--){
+            for(int flag = 0; flag <= 1; flag++){
+                for(int count = 2; count >= 0; count--){
+                    if(count == 2 || ind == n){
+                        dp[ind][flag][count] = 0;
+                    }
+                    else if(flag){
+                        dp[ind][flag][count] = max(-prices[ind] + dp[ind + 1][0][count], dp[ind + 1][1][count]);
+                    }
+                    else{
+                        dp[ind][flag][count] = max(dp[ind + 1][1][count + 1] + prices[ind], dp[ind + 1][0][count]);
+                    }
+                }
+            }
+        }
+        return dp[0][1][0];
+    }
+};
+
+//Bottom-Up
+//TC: O(n*2*3)
+//SC: O(1)
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        
+        int n = prices.size();
+        
+        vector<vector<int>> pre(2, vector<int>(3,0)), curr(2,vector<int>(3));
+        
+        for(int ind = n - 1; ind >= 0; ind--){
+            for(int flag = 0; flag <= 1; flag++){
+                for(int count = 2; count >= 0; count--){
+                    if(count == 2 || ind == n){
+                        curr[flag][count] = 0;
+                    }
+                    else if(flag){
+                        curr[flag][count] = max(-prices[ind] + pre[0][count], pre[1][count]);
+                    }
+                    else{
+                        curr[flag][count] = max(pre[1][count + 1] + prices[ind], pre[0][count]);
+                    }
+                }
+            }
+            pre = curr;
+        }
+        return pre[1][0];
+    }
+};
+
+//Intuitive
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
