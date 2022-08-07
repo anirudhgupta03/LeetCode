@@ -111,3 +111,50 @@ public:
         return solve(0, 0, m, n, dp, dungeon);
     }
 };
+
+//Method - 3
+class Solution {
+public:
+    int dx[2] = {1,0};
+    int dy[2] = {0,1};
+    int solve(int x, int y, int m, int n, vector<vector<int>> &dungeon, vector<vector<int>> &dp){
+        
+        if(x == m - 1 && y == n - 1){
+            if(dungeon[x][y] >= 0){
+                return 1;
+            }
+            else{
+                return 1 - dungeon[x][y];
+            }
+        }
+        
+        if(dp[x][y] != -1){
+            return dp[x][y];
+        }
+        int minHealth = INT_MAX;
+        
+        for(int i = 0; i < 2; i++){
+            int xo = x + dx[i], yo = y + dy[i];
+            if(xo < m && yo < n){
+                int temp = solve(xo, yo, m, n, dungeon, dp);
+                if(temp != INT_MAX){
+                    if(temp - dungeon[x][y] > 0){
+                        minHealth = min(minHealth, temp - dungeon[x][y]);
+                    }
+                    else{
+                        minHealth = min(minHealth, 1);
+                    }
+                }
+            }
+        }
+        return dp[x][y] = minHealth;
+    }
+    int calculateMinimumHP(vector<vector<int>>& dungeon) {
+        
+        int m = dungeon.size(), n = dungeon[0].size();
+        
+        vector<vector<int>> dp(m, vector<int>(n, -1));
+        
+        return solve(0, 0, m, n, dungeon, dp);
+    }
+};
