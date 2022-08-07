@@ -89,6 +89,8 @@ public:
 };
 
 //Intuitive
+//TC: O(n)
+//SC: O(1)
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
