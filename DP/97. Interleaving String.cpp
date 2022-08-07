@@ -57,63 +57,137 @@ public:
 };
 
 //Method - 2
+//Top-Down
+//TC: O(len1*len2)
+//SC: O(len1*len2) + Auxilliary Stack Space
 class Solution {
 public:
-    int len1, len2, len3;
-    string str1, str2, str3;
-    bool solve(int ind1, int ind2, int ind3, vector<vector<int>> &dp){
+    int solve(int ind1, int ind2, int ind3, string &s1, string &s2, string &s3, vector<vector<int>> &dp){
         
-        if(ind1 == len1 && ind2 == len2){
+        if(ind3 == s3.size()){
             return true;
         }
-        
+
         if(dp[ind1][ind2] != -1){
             return dp[ind1][ind2];
         }
-        
-        if(ind1 == len1){
-            if(str2[ind2] == str3[ind3]){
-                bool flag = solve(ind1, ind2 + 1, ind3 + 1, dp);
-                if(flag) return dp[ind1][ind2] = true;
-            }
-            else{
-                return dp[ind1][ind2] = false;
-            }
+        if(ind1 < s1.size() && s1[ind1] == s3[ind3]){
+            bool flag = solve(ind1 + 1,ind2, ind3 + 1, s1, s2, s3, dp);
+            if(flag) return dp[ind1][ind2] = 1;
         }
-        
-        if(ind2 == len2){
-            if(str1[ind1] == str3[ind3]){
-                bool flag = solve(ind1 + 1, ind2, ind3 + 1, dp);
-                if(flag) return dp[ind1][ind2] = true;
-            }
-            else{
-                return dp[ind1][ind2] = false;
-            }
+        if(ind2 < s2.size() && s2[ind2] == s3[ind3]){
+            bool flag = solve(ind1, ind2 + 1, ind3 + 1, s1, s2, s3, dp);
+            if(flag) return dp[ind1][ind2] = 1;
         }
-        
-        if(str1[ind1] == str3[ind3]){
-            bool flag = solve(ind1 + 1, ind2, ind3 + 1, dp);
-            if(flag) return dp[ind1][ind2] = true;
-        }
-        
-        if(str2[ind2] == str3[ind3]){
-            bool flag = solve(ind1, ind2 + 1, ind3 + 1, dp);
-            if(flag) return dp[ind1][ind2] = true;
-        }
-        
-        return dp[ind1][ind2] = false;
+        return dp[ind1][ind2] = 0;
     }
     bool isInterleave(string s1, string s2, string s3) {
         
-        len1 = s1.size(), len2 = s2.size(), len3 = s3.size();
-        str1 = s1, str2 = s2, str3 = s3;
+        int len1 = s1.size(), len2 = s2.size(), len3 = s3.size();
         
         if(len1 + len2 != len3){
             return false;
         }
         
-        vector<vector<int>> dp(len1 + 1, vector<int>(len2 + 1, -1));
+        vector<vector<int>> dp(len1 + 1, vector<int>(len2 + 1, -1)); 
         
-        return solve(0,0,0,dp);
+        return solve(0, 0, 0, s1, s2, s3, dp);
+    }
+};
+
+//Method - 3
+//Bottom-Up
+//TC: O(len1*len2)
+//SC: O(len1*len2)
+class Solution {
+public:
+    bool isInterleave(string s1, string s2, string s3) {
+        
+        int len1 = s1.size(), len2 = s2.size(), len3 = s3.size();
+        
+        if(len1 + len2 != len3){
+            return false;
+        }
+        
+        vector<vector<int>> dp(len1 + 1, vector<int>(len2 + 1, 0)); 
+        
+        for(int ind1 = len1; ind1 >= 0; ind1--){
+            for(int ind2 = len2; ind2 >= 0; ind2--){
+                if(ind1 + ind2 == len3){
+                    dp[ind1][ind2] = 1;
+                }
+                else{
+                    if(ind1 < len1 && s1[ind1] == s3[ind1 + ind2]){
+                        bool flag = dp[ind1 + 1][ind2];
+                        if(flag){
+                            dp[ind1][ind2] = 1;
+                            continue;
+                        }
+                    }
+                    if(ind2 < len2 && s2[ind2] == s3[ind1 + ind2]){
+                        bool flag = dp[ind1][ind2 + 1];
+                        if(flag){
+                            dp[ind1][ind2] = 1;
+                            continue;
+                        }
+                    }
+                    dp[ind1][ind2] = 0;
+                }
+            }
+        }
+        return dp[0][0];
+    }
+};
+
+//Method - 4
+//Bottom-Up
+//TC: O(len1*len2)
+//SC: O(len2)
+class Solution {
+public:
+    bool isInterleave(string s1, string s2, string s3) {
+        
+        int len1 = s1.size(), len2 = s2.size(), len3 = s3.size();
+        
+        if(len1 + len2 != len3){
+            return false;
+        }
+        
+        vector<int> pre(len2 + 1), curr(len2 + 1);
+        
+        pre[len2] = 1;
+        
+        for(int j = len2 - 1; j >= 0; j--){
+            if(s2[j] == s3[len1 + j]){
+                if(pre[j + 1]){
+                    pre[j] = 1;
+                }
+                else{
+                    pre[j] = 0;
+                }
+            }
+        }
+        
+        for(int ind1 = len1 - 1; ind1 >= 0; ind1--){
+            for(int ind2 = len2; ind2 >= 0; ind2--){
+                if(ind1 < s1.size() && s1[ind1] == s3[ind1 + ind2]){
+                    bool flag = pre[ind2];
+                    if(flag){
+                        curr[ind2] = 1;
+                        continue;
+                    }
+                }
+                if(ind2 < s2.size() && s2[ind2] == s3[ind1 + ind2]){
+                    bool flag = curr[ind2 + 1];
+                    if(flag){
+                        curr[ind2] = 1;
+                        continue;
+                    }
+                }
+                curr[ind2] = 0;
+            }
+            pre = curr;
+        }
+        return pre[0];
     }
 };
