@@ -1,4 +1,83 @@
-//Method - 1
+//Top-Down
+//TC: O(n*amount)
+//SC: O(n*amount) + Auxilliary Stack Space
+class Solution {
+public:
+    int solve(int ind, int amount, vector<int> &coins, vector<vector<int>> &dp){
+        
+        if(amount == 0){
+            return 0;
+        }
+        if(ind == coins.size()){
+            return INT_MAX;
+        }
+        
+        if(dp[ind][amount] != -1){
+            return dp[ind][amount];
+        }
+        if(coins[ind] <= amount){
+            int take = solve(ind, amount - coins[ind], coins, dp);
+            int nottake = solve(ind + 1, amount, coins, dp);
+            if(take != INT_MAX){
+                return dp[ind][amount] = min(take + 1, nottake);
+            }
+            else{
+                return dp[ind][amount] = nottake;
+            }
+        }
+        return dp[ind][amount] = INT_MAX;
+    }
+    int coinChange(vector<int>& coins, int amount) {
+        sort(coins.begin(), coins.end());
+        int n = coins.size();
+        vector<vector<int>> dp(n, vector<int>(amount + 1, -1));
+        int res = solve(0, amount, coins, dp);
+        if(res == INT_MAX) return -1;
+        return res;
+    }
+};
+
+//Bottom-Up
+//TC: O(n*amount)
+//SC: O(n*amount)
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        
+        sort(coins.begin(), coins.end());
+        int n = coins.size();
+        vector<vector<int>> dp(n + 1, vector<int>(amount + 1));
+        
+        for(int i = n; i >= 0; i--){
+            for(int j = 0; j <= amount; j++){
+                if(j == 0){
+                    dp[i][j] = 0;
+                }
+                else if(i == n){
+                    dp[i][j] = INT_MAX;
+                }
+                else if(coins[i] <= j){
+                    
+                    int take = dp[i][j - coins[i]];
+                    int nottake = dp[i + 1][j];
+                    
+                    if(take != INT_MAX){
+                        dp[i][j] = min(take + 1, nottake);
+                    }
+                    else{
+                        dp[i][j] = nottake;
+                    }
+                }
+                else{
+                    dp[i][j] = INT_MAX;
+                }
+            }
+        }
+        return dp[0][amount] == INT_MAX ? -1 : dp[0][amount];
+    }
+};
+
+//Intuitive Method - 1
 class Solution {
 public:
     int coinChange(vector<int>& coins, int amount) {
@@ -32,7 +111,7 @@ public:
     }
 };
 
-//Method - 2
+//Intuitive Method - 2
 class Solution {
 public:
     int coinChange(vector<int>& coins, int amount) {
