@@ -1,30 +1,26 @@
 //Method - 1
 class Solution {
 public:
-    int solve(int count, int n, vector<int> &dp){
-        
-        if(n == 0){
-            if(count >= 2) return 1;
-            return 0;
+    int solve(int m, vector<int> &dp){
+        if(m == 0){
+            return 1;
         }
-        
-        if(dp[count]!= -1){
-            return dp[count];
+        if(dp[m] != -1){
+            return dp[m];
         }
         int maxProd = 1;
-        
-        for(int i = 1; i <= n; i++){
-            maxProd = max(maxProd, i* solve(count + 1, n - i, dp));
+        for(int i = 1; i <= m; i++){
+            maxProd = max(maxProd, i*solve(m - i, dp));
         }
-        return dp[count] = maxProd;
+        return dp[m] = maxProd;
     }
     int integerBreak(int n) {
-        
-        int prod = 1, maxProd = 1;
-        
         vector<int> dp(n + 1, -1);
-        
-        return solve(0, n,  dp);
+        int maxProd = 1;
+        for(int i = 1; i < n; i++){
+            maxProd = max(maxProd, i*solve(n - i, dp));
+        }
+        return maxProd;
     }
 };
 
