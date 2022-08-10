@@ -1,38 +1,38 @@
-//Method - 1
+//Top-Down
 //TC - O(N*N)
 //SC - O(N*N)
 class Solution {
 public:
-    bool solve(int sum, int ind, string &s, vector<vector<int>> &dp){
+    int solve(int sum, int ind, string &s, vector<vector<int>> &dp){
         
         if(ind == s.size() && sum == 0){
-            return true;
+            return 1;
         }
         
         if(ind == s.size() || sum < 0){
-            return false;
+            return 0;
         }
         
         if(dp[sum][ind] != -1){
             return dp[sum][ind];
         }
         
+        int flag;
         if(s[ind] == '('){
-            bool flag = solve(sum + 1, ind + 1, s, dp);
-            if(flag) return true;
+            flag = solve(sum + 1, ind + 1, s, dp);
         }
         else if(s[ind] == ')'){
-            bool flag = solve(sum - 1, ind + 1, s, dp);
-            if(flag) return true;
+            flag = solve(sum - 1, ind + 1, s, dp);
         }
         else{
-            bool flag = solve(sum, ind + 1, s, dp) || solve(sum + 1, ind + 1, s, dp) || solve(sum - 1, ind + 1, s, dp);
-            if(flag) return true;
+            flag = solve(sum, ind + 1, s, dp) || solve(sum + 1, ind + 1, s, dp) || solve(sum - 1, ind + 1, s, dp);
         }
-        return dp[sum][ind] = false;
+        return dp[sum][ind] = flag;
     }
     bool checkValidString(string s) {
-        vector<vector<int>> dp(s.size() + 1, vector<int>(s.size() + 1, - 1));
+        
+        int n = s.size();
+        vector<vector<int>> dp(n + 1, vector<int>(n + 1, - 1));
         return solve(0, 0, s, dp);
     }
 };
