@@ -1,3 +1,40 @@
+//Top-Down
+//TC: O(n*n)
+//SC: O(n*n) + Auxilliary Stack Space
+class Solution {
+public:
+    int solve(int count, int copy, int n, vector<vector<int>> &dp){
+        
+        if(count == n){
+            return 0;
+        }
+        
+        if(dp[count][copy] != -1){
+            return dp[count][copy];
+        }
+        int minSteps = INT_MAX;
+        
+        if(copy){
+            if(count + copy <= n){
+                int temp = solve(count + copy, copy, n, dp);
+                if(temp != INT_MAX)
+                minSteps = min(minSteps, temp + 1); 
+            }
+        }
+        if(2*count <= n){
+            int temp = solve(2*count, count, n, dp);
+            if(temp != INT_MAX)
+            minSteps = min(minSteps, temp + 2);
+        }
+        return dp[count][copy] = minSteps;
+    }
+    int minSteps(int n) {
+        
+        vector<vector<int>> dp(n + 1, vector<int>(n + 1, -1));
+        return solve(1, 0, n, dp);
+    }
+};
+
 //Method - 1
 class Solution {
 public:
