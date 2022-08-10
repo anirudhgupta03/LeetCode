@@ -79,3 +79,38 @@ public:
         return ans;
     }
 };
+
+//Top-Down
+class Solution {
+public:
+    // '#' - 0
+    // 'A' - 1
+    // 'P' - 2
+    // 'L' - 3
+    #define ll long long
+    #define mod 1000000007
+    ll dp[4][4][2][100001];
+    ll solve(int ch, int pch, int counta, int n){
+        
+        if(n == 0){
+            return 1;
+        }
+        if(dp[ch][pch][counta][n] != -1){
+            return dp[ch][pch][counta][n];
+        }
+        
+        ll count = 0;
+        count = (count + solve(2, ch, counta, n - 1))%mod;
+        if(counta == 0){
+            count = (count + solve(1, ch, counta + 1, n - 1))%mod;
+        }
+        if(ch != 3 || pch != 3){
+            count = (count + solve(3, ch, counta, n - 1))%mod;
+        }
+        return dp[ch][pch][counta][n] = count;
+    }
+    int checkRecord(int n) {
+        memset(dp, -1, sizeof(dp));
+        return solve(0, 0, 0, n);
+    }
+};
