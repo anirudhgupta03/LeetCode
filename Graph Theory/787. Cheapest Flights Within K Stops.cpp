@@ -71,3 +71,52 @@ public:
         return -1;
     }
 };
+
+//Method - 3
+//Using Dijkstra's Algorithm
+class Solution {
+public:
+    #define pipii pair<int,pair<int,int>>
+    struct cmp{
+      bool operator()(pipii &p1, pipii &p2){
+          return p1.second.first > p2.second.first;
+      }  
+    };
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        
+        vector<pair<int,int>> al[n];
+        
+        for(auto &x: flights){
+            al[x[0]].push_back({x[1], x[2]});
+        }
+        
+        priority_queue<pipii, vector<pipii>, cmp> pq;
+        
+        vector<vector<int>> vis(n, vector<int>(n + 1, 0));
+        
+        pq.push({src,{0, -1}});
+        
+        while(!pq.empty()){
+            
+            int curr = pq.top().first, cost = pq.top().second.first, moves = pq.top().second.second;
+            pq.pop();
+            
+            if(curr == dst){
+                return cost;
+            }
+            
+            if(vis[curr][moves + 1]) continue;
+            vis[curr][moves + 1] = 1;
+            
+            for(auto &x: al[curr]){
+                if(moves + 1 == k && x.first == dst){
+                    pq.push({x.first, {cost + x.second, moves + 1}});
+                }
+                else if(moves + 1 < k){
+                    pq.push({x.first,{cost + x.second, moves + 1}});
+                }
+            }
+        }
+        return -1;
+    }
+};
