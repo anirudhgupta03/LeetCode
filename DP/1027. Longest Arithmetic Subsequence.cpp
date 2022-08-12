@@ -80,3 +80,47 @@ public:
         return len;
     }
 };
+
+//Method - 4
+//Best
+class Solution {
+public:
+    int longestArithSeqLength(vector<int>& A) {
+        
+        int N=A.size();
+        
+        if(N < 3) return N;
+        
+        vector<vector<int> > dp(N, vector<int>(N, -1));
+        
+        for(int i = 0; i < N; i++){
+            for(int j = i + 1; j < N; j++){
+                dp[i][j]=2;
+            }
+        }
+        
+        unordered_map<int,int> umap;
+        umap[A[0]]=0;
+        
+        for(int i = 1; i < N; i++){
+            for(int j = i + 1; j < N; j++){
+                int ele= 2*A[i]-A[j];
+                if(umap.find(ele)== umap.end()){
+                    dp[i][j]= max(dp[i][j] , 2);
+                }
+                else{
+                    int pos= umap[ele];
+                    dp[i][j]= max(dp[i][j] , dp[pos][i]+1);
+                }
+            }
+            umap[A[i]]=i;
+        }
+        int maxi=2;
+        for(int i = 0; i < N; i++){
+            for(int j = i + 1; j < N; j++){
+                maxi= max(maxi , dp[i][j]);
+            }
+        }
+        return maxi;
+    }
+};
