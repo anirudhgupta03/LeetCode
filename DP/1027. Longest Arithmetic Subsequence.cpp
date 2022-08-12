@@ -54,3 +54,29 @@ public:
         return ans;
     }
 };
+
+//Method - 3
+//Using the constraints
+class Solution {
+public:
+    int longestArithSeqLength(vector<int>& nums) {
+        
+        int n = nums.size();
+        vector<vector<int>> dp(n, vector<int>(1001,0));
+       
+        int len = 0; 
+        for(int i = 1; i < n; i++){
+            for(int j = 0; j < i; j++){
+                int diff = nums[i] - nums[j] + 500;
+                if(dp[j][diff]){
+                    dp[i][diff] = max(dp[i][diff], dp[j][diff] + 1);
+                }
+                else{
+                    dp[i][diff] = max(dp[i][diff], 2);
+                }
+                len = max(len, dp[i][diff]);
+            }
+        }
+        return len;
+    }
+};
