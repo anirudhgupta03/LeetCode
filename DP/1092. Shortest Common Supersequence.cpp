@@ -1,4 +1,142 @@
 //Method - 1
+//Find LCS and then using that find SCS
+class Solution {
+public:
+    string shortestCommonSupersequence(string str1, string str2) {
+        
+        int len1 = str1.size(), len2 = str2.size();
+        
+        int dp[len1 + 1][len2 + 1];
+        
+        for(int i = 0; i <= len1; i++){
+            for(int j = 0; j <= len2; j++){
+                if(i == 0 || j == 0){
+                    dp[i][j] = 0;
+                }
+                else if(str1[i - 1] == str2[j - 1]){
+                    dp[i][j] = 1 + dp[i - 1][j - 1];
+                }
+                else{
+                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+        
+        int i = len1, j = len2;
+        string LCS;
+        
+        while(i && j){
+            if(str1[i - 1] == str2[j - 1]){
+                LCS.push_back(str1[i - 1]);
+                i--;
+                j--;
+            }
+            else{
+                if(dp[i - 1][j] > dp[i][j - 1]){
+                    i--;
+                }
+                else{
+                    j--;
+                }
+            }
+        }
+        reverse(LCS.begin(), LCS.end());
+        int len3 = LCS.size();
+        
+        string SCS;
+        int ptr1 = 0, ptr2 = 0, ptr3 = 0;
+        
+        while(ptr3 < len3){
+            
+            while(ptr1 < len1 && str1[ptr1] != LCS[ptr3]){
+                SCS.push_back(str1[ptr1]);
+                ptr1++;
+            }
+            while(ptr2 < len2 && str2[ptr2] != LCS[ptr3]){
+                SCS.push_back(str2[ptr2]);
+                ptr2++;
+            }
+            while(ptr1 < len1 && ptr2 < len2 && ptr3 < len3 && str1[ptr1] == LCS[ptr3] && str2[ptr2] == LCS[ptr3]){
+                SCS.push_back(LCS[ptr3]);
+                ptr1++;
+                ptr2++;
+                ptr3++;
+            }
+        }
+        while(ptr1 < len1){
+            SCS.push_back(str1[ptr1]);
+            ptr1++;
+        }
+        while(ptr2 < len2){
+            SCS.push_back(str2[ptr2]);
+            ptr2++;
+        }
+        return SCS;
+    }
+};
+
+//Method - 2
+//Directly find SCS
+//Ref: https://www.youtube.com/watch?v=VDhRg-ZJTuc&list=PL_z_8CaSLPWekqhdCPmFohncHwz8TY2Go&index=30
+class Solution {
+public:
+    string shortestCommonSupersequence(string str1, string str2) {
+        
+        int n1 = str1.size(), n2 = str2.size();
+        
+        int dp[n1+1][n2+1];
+        
+        for(int i = 0; i <= n1; i++){
+            for(int j = 0; j <= n2; j++){
+                
+                if(i == 0 || j == 0){
+                    dp[i][j] = 0;
+                }
+                else if(str1[i-1] == str2[j-1]){
+                    dp[i][j] = 1 + dp[i-1][j-1];
+                }
+                else{
+                    dp[i][j] = max(dp[i-1][j],dp[i][j-1]);
+                }
+            }
+        }
+        
+        string scs;
+        int i = n1, j = n2;
+        
+        while(i != 0 && j != 0){
+            
+            if(str1[i-1] == str2[j-1]){
+                scs.push_back(str1[i-1]);
+                i--;
+                j--;
+            }
+            else{
+                if(dp[i-1][j] > dp[i][j-1]){
+                    scs.push_back(str1[i-1]);
+                    i--;
+                }
+                else{
+                    scs.push_back(str2[j-1]);
+                    j--;
+                }
+            }
+        }
+        
+        while(i){
+            scs.push_back(str1[i-1]);
+            i--;
+        }
+        while(j){
+            scs.push_back(str2[j-1]);
+            j--;
+        }
+        reverse(scs.begin(),scs.end());
+        return scs;
+    }
+};
+
+//Method - 3
 class Solution {
 public:
     string shortestCommonSupersequence(string s1, string s2) {
@@ -94,7 +232,7 @@ public:
     }
 };
 
-//Method - 2
+//Method - 4
 //Time Complexity - O(n*m)
 //Space Complexity - O(n*m)
 class Solution {
@@ -163,7 +301,7 @@ public:
     }
 };
 
-//Method - 3
+//Method - 5
 class Solution {
 public:
     string shortestCommonSupersequence(string s1, string s2) {
@@ -246,7 +384,8 @@ public:
     }
 };
 
-//Method - 4class Solution {
+//Method - 6
+class Solution {
 public:
     string shortestCommonSupersequence(string str1, string str2) {
         
@@ -311,66 +450,6 @@ public:
             p2++;
         }
         
-        return scs;
-    }
-};
-
-//Method - 5
-//Ref: https://www.youtube.com/watch?v=VDhRg-ZJTuc&list=PL_z_8CaSLPWekqhdCPmFohncHwz8TY2Go&index=30
-class Solution {
-public:
-    string shortestCommonSupersequence(string str1, string str2) {
-        
-        int n1 = str1.size(), n2 = str2.size();
-        
-        int dp[n1+1][n2+1];
-        
-        for(int i = 0; i <= n1; i++){
-            for(int j = 0; j <= n2; j++){
-                
-                if(i == 0 || j == 0){
-                    dp[i][j] = 0;
-                }
-                else if(str1[i-1] == str2[j-1]){
-                    dp[i][j] = 1 + dp[i-1][j-1];
-                }
-                else{
-                    dp[i][j] = max(dp[i-1][j],dp[i][j-1]);
-                }
-            }
-        }
-        
-        string scs;
-        int i = n1, j = n2;
-        
-        while(i != 0 && j != 0){
-            
-            if(str1[i-1] == str2[j-1]){
-                scs.push_back(str1[i-1]);
-                i--;
-                j--;
-            }
-            else{
-                if(dp[i-1][j] > dp[i][j-1]){
-                    scs.push_back(str1[i-1]);
-                    i--;
-                }
-                else{
-                    scs.push_back(str2[j-1]);
-                    j--;
-                }
-            }
-        }
-        
-        while(i){
-            scs.push_back(str1[i-1]);
-            i--;
-        }
-        while(j){
-            scs.push_back(str2[j-1]);
-            j--;
-        }
-        reverse(scs.begin(),scs.end());
         return scs;
     }
 };
