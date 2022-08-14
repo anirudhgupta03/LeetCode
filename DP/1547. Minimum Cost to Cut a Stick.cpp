@@ -1,3 +1,5 @@
+//TC: O(n*n*n)
+//SC: O(n*n) + Auxilliary Stack Space
 class Solution {
 public:
     int solve(int i, int j, vector<int> &cuts, vector<vector<int>> &dp){
