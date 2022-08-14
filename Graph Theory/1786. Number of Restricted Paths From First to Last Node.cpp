@@ -142,3 +142,67 @@ public:
         return dfs(1, -1, al, dist, dp);
     }
 };
+
+//Method
+//Dijkstra + DP
+class Solution {
+public:
+    #define pii pair<int,int>
+    #define ll long long
+    #define mod 1000000007
+    struct cmp{
+      bool operator()(pii &p1, pii &p2){
+          return p1.second > p2.second;
+      }  
+    };
+    ll solve(int curr, int n, vector<int> &dist, vector<pii> al[], vector<ll> &dp){
+        
+        if(curr == n){
+            return 1;
+        }
+        if(dp[curr] != -1){
+            return dp[curr];
+        }
+        ll count = 0;
+        for(auto &x: al[curr]){
+            if(dist[x.first] < dist[curr]){
+                count = (count + solve(x.first, n, dist, al, dp))%mod;
+            }
+        }
+        return dp[curr] = count;
+    }
+    int countRestrictedPaths(int n, vector<vector<int>>& edges) {
+        
+        vector<int> dist(n + 1, INT_MAX);
+        
+        vector<pii> al[n + 1];
+        
+        for(auto &x: edges){
+            al[x[0]].push_back({x[1], x[2]});
+            al[x[1]].push_back({x[0], x[2]});
+        }
+        
+        priority_queue<pii, vector<pii>, cmp> pq;
+        pq.push({n, 0});
+        
+        vector<int> vis(n + 1, 0);
+        
+        while(!pq.empty()){
+            
+            int curr = pq.top().first, d = pq.top().second;
+            pq.pop();
+            
+            if(vis[curr]) continue;
+            vis[curr] = 1;
+            dist[curr] = d;
+            
+            for(auto &x: al[curr]){
+                if(vis[x.first] == 0){
+                    pq.push({x.first, d + x.second});
+                }
+            }
+        }
+        vector<ll> dp(n + 1, -1);
+        return solve(1, n, dist, al, dp);
+    }
+};
