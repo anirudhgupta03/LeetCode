@@ -1,48 +1,34 @@
 //Method - 1
+//Binary Search
+#define ll long long
 class Solution {
 public:
-    #define ll long long
-    bool isPossible(int freq, vector<int> &nums, ll k, vector<ll> &prefix){
-        
-        ll i = 0, ele = nums[i];
-        
-        while(i < nums.size() && ele == nums[i]){
-            i++;
-        }
-        if(i >= freq){
-            return true;
-        }
-        while(i < nums.size()){
-            ele = nums[i];
-            while(i < nums.size() && nums[i] == ele){
-                i++;
+    bool isPossible(int freq, vector<int> &nums, vector<ll> &prefix, int k){
+        int lo = 0, hi = freq;
+        while(hi <= nums.size()){
+            ll kSum = (ll)(freq)*nums[hi - 1] - (prefix[hi] - prefix[lo]);
+            if(kSum <= k){
+                return true;
             }
-            if(i - freq >= 0){
-                ll op = (ll)freq*nums[i - 1] - (prefix[i] - prefix[i - freq]);
-                if(op <= k){
-                    return true;
-                }
-            }
+            lo++;
+            hi++;
         }
         return false;
     }
     int maxFrequency(vector<int>& nums, int k) {
         
-        sort(nums.begin(), nums.end());
-        
         int n = nums.size();
-        
+        sort(nums.begin(), nums.end());
         vector<ll> prefix(n + 1, 0);
-        
-        for(int i = 1; i <= n; i++){
-            prefix[i] = prefix[i - 1] + nums[i - 1];
+
+        for(int i = 0; i < n; i++){
+            prefix[i + 1] = prefix[i] + nums[i];
         }
         
-        int lo = 1, hi = n, ans;
-        
+        int lo = 1, hi = n, ans = 1;
         while(lo <= hi){
             int mid = (lo + hi)/2;
-            if(isPossible(mid, nums, k, prefix)){
+            if(isPossible(mid, nums, prefix, k)){
                 ans = mid;
                 lo = mid + 1;
             }
@@ -55,6 +41,38 @@ public:
 };
 
 //Method - 2
+//Sliding Window
+#define ll long long
+class Solution {
+public:
+    int maxFrequency(vector<int>& nums, int k) {
+        
+        int n = nums.size();   
+        sort(nums.begin(), nums.end());
+
+        int lo = 0, hi = 1, count = 1;
+        ll sum = 0;
+
+        while(hi < n){
+            while(hi < n && sum <= k){
+                sum += (ll)(nums[hi] - nums[hi - 1])*(hi - lo);
+                if(sum > k){
+                    break;
+                }
+                hi++;
+            }
+            count = max(count, hi - lo);
+            while(lo <= hi && sum > k){
+                sum -= (ll)(nums[hi] - nums[lo]);
+                lo++;
+            }
+            hi++;
+        }
+        return count;
+    }
+};
+
+//Method - 3
 //Ref: https://www.youtube.com/watch?v=nveGJc_oYAI
 class Solution {
 public:
