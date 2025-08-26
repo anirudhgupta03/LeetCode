@@ -1,3 +1,4 @@
+//Ref: https://www.youtube.com/watch?v=37E9ckMDdTk
 class Solution {
 public:
     bool check(vector<int>& nums) {
