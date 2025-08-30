@@ -1,7 +1,7 @@
 //Ref: https://www.youtube.com/watch?v=tp8JIuCXBaU&list=PLgUwDviBIf0rENwdL0nEH0uGom9no0nyB
 //Optimal Solution
 //Dutch National Flag Algorithm
-//00000...
+//https://youtu.be/tp8JIuCXBaU?list=PLgUwDviBIf0rENwdL0nEH0uGom9no0nyB&t=451
 class Solution {
 public:
     void sortColors(vector<int>& nums) {
