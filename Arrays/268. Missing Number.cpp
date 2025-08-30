@@ -1,3 +1,4 @@
+//Ref: https://youtu.be/bYWLJb3vCWY
 //Method - 1
 class Solution {
 public:
@@ -42,5 +43,21 @@ public:
         }
         
         return n*(n+1)/2 - sum;
+    }
+};
+
+//Method - 3
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        
+        int xorSum = 0;
+        for(int i = 0; i <= nums.size(); i++){
+            xorSum = xorSum^i;
+            if(i != nums.size()) {
+                xorSum = xorSum^nums[i];
+            }
+        }
+        return xorSum;
     }
 };
