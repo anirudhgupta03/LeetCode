@@ -1,3 +1,4 @@
+//Ref: https://www.youtube.com/watch?v=bYWLJb3vCWY
 class Solution {
 public:
     int findMaxConsecutiveOnes(vector<int>& nums) {
