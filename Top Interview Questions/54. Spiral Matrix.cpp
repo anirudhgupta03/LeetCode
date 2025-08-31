@@ -3,57 +3,51 @@ public:
     vector<int> spiralOrder(vector<vector<int>>& matrix) {
         
         int m = matrix.size(), n = matrix[0].size();
-        
-        int t = 0, l = 0, b = m - 1, r = n - 1;
-        
-        int dir = 1, i = 0, j = 0;
-        
+        int i = 0, j = 0, mini = 0, maxi = m - 1, minj = 0, maxj = n - 1, dir = 0;
         vector<int> res;
-        
-        int count = 0;
-        
-        while(count != m*n){
-            
-            if(dir == 1){
-                while(j <= r){
+        while(res.size() != m*n){
+            if(dir == 0){
+                while(j <= maxj){
                     res.push_back(matrix[i][j]);
-                    count++;
                     j++;
                 }
-                t++;
-                j--;
-                i++;
-                while(i <= b){
-                    count++;
+                dir = 1;
+                j = maxj;
+                i = mini + 1;
+                mini++;
+            }
+            else if(dir == 1){
+                while(i <= maxi){
                     res.push_back(matrix[i][j]);
                     i++;
                 }
-                i--;
-                j--;
-                r--;
-                dir = -1;
+                dir = 2;
+                i = maxi;
+                j = maxj - 1;
+                maxj--;
             }
-            else{
-                
-                while(j >= l){
+            else if(dir == 2){
+                while(j >= minj){
                     res.push_back(matrix[i][j]);
-                    count++;
                     j--;
                 }
-                j++;
-                i--;
-                b--;
-                while(i >= t){
+                dir = 3;
+                j = minj;
+                i = maxi - 1;
+                maxi--;
+            }
+            else if(dir == 3){
+                while(i >= mini){
                     res.push_back(matrix[i][j]);
-                    count++;
                     i--;
                 }
-                i++;
-                j++;
-                l++;
-                dir = 1;
+                dir = 0;
+                i = mini;
+                j = minj + 1;
+                minj++;
             }
         }
+
         return res;
     }
 };
