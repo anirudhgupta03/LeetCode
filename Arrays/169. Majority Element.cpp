@@ -1,3 +1,4 @@
+//Ref: https://www.youtube.com/watch?v=nP_ns3uSh80&list=PLgUwDviBIf0rENwdL0nEH0uGom9no0nyB
 class Solution {
 public:
     int majorityElement(vector<int>& nums) {
