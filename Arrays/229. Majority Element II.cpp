@@ -1,8 +1,9 @@
+//Ref: https://www.youtube.com/watch?v=vwZj1K0e9U8&list=PLgUwDviBIf0rENwdL0nEH0uGom9no0nyB&index=19
 class Solution {
 public:
     vector<int> majorityElement(vector<int>& nums) {
         
-        int ele1 = -1, ele2 = -1,count1= 0, count2=0;
+        int ele1 = INT_MIN, ele2 = INT_MIN,count1= 0, count2=0;
         
         for(int i = 0; i < nums.size(); i++){
             
