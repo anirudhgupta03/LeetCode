@@ -4,47 +4,37 @@ public:
     vector<int> spiralOrder(vector<vector<int>>& matrix) {
         
         int m = matrix.size(), n = matrix[0].size();
-        int i = 0, j = 0, mini = 0, maxi = m - 1, minj = 0, maxj = n - 1, dir = 0;
+        int mini = 0, maxi = m - 1, minj = 0, maxj = n - 1, dir = 0;
+
         vector<int> res;
+
         while(res.size() != m*n){
             if(dir == 0){
-                while(j <= maxj){
-                    res.push_back(matrix[i][j]);
-                    j++;
+                for(int j = minj; j <= maxj; j++){
+                    res.push_back(matrix[mini][j]);
                 }
                 dir = 1;
-                j = maxj;
-                i = mini + 1;
                 mini++;
             }
             else if(dir == 1){
-                while(i <= maxi){
-                    res.push_back(matrix[i][j]);
-                    i++;
+                for(int i = mini; i <= maxi; i++){
+                    res.push_back(matrix[i][maxj]);
                 }
                 dir = 2;
-                i = maxi;
-                j = maxj - 1;
                 maxj--;
             }
             else if(dir == 2){
-                while(j >= minj){
-                    res.push_back(matrix[i][j]);
-                    j--;
+                for(int j = maxj; j >= minj; j--){
+                    res.push_back(matrix[maxi][j]);
                 }
                 dir = 3;
-                j = minj;
-                i = maxi - 1;
                 maxi--;
             }
             else if(dir == 3){
-                while(i >= mini){
-                    res.push_back(matrix[i][j]);
-                    i--;
+                for(int i = maxi; i >= mini; i--){
+                    res.push_back(matrix[i][minj]);
                 }
                 dir = 0;
-                i = mini;
-                j = minj + 1;
                 minj++;
             }
         }
