@@ -1,3 +1,4 @@
+//Ref: https://www.youtube.com/watch?v=6zhGS79oQ4k&list=PLF6ChxadzFf8vjafLIxxbKUfarW4V4IOh&index=2
 class Solution {
 public:
     int searchInsert(vector<int>& nums, int target) {
