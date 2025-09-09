@@ -1,3 +1,5 @@
+//Ref: https://www.youtube.com/watch?v=hjR1IYVx9lY&list=PLF6ChxadzFf8vjafLIxxbKUfarW4V4IOh&index=3
+//Method - 1
 class Solution {
 public:
     vector<int> searchRange(vector<int>& nums, int target) {
@@ -36,5 +38,19 @@ public:
             }
         }
         return {firstPos, lastPos};
+    }
+};
+
+//Method - 2
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int n = nums.size();
+        int lb = lower_bound(nums.begin(), nums.end(), target) - nums.begin();
+        if(lb == n || nums[lb] != target){
+            return {-1, -1};
+        }
+        int ub = upper_bound(nums.begin(), nums.end(), target) - nums.begin();
+        return {lb, ub - 1};
     }
 };
