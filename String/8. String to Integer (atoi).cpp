@@ -1,62 +1,31 @@
 class Solution {
 public:
-    #define ll long long
     int myAtoi(string s) {
-        
-        int i = 0;
-        
-        while(i < s.size() && s[i] == ' '){
-            i++;
-        }
-        
-        if(i == s.size()){
-            return 0;
-        }
-        bool flag1 = 0, flag2 = 0;
+        int len = s.length();
+        long double res = 0;
+        int ptr = 0;
         int sign = 1;
+
+        while(ptr < len && s[ptr] == ' ') ptr++;
         
-        string ans;
-        
-        while(i < s.size()){
-            
-            if(s[i] == '-' || s[i] == '+'){
-                if(flag1 || flag2){
-                    break;
-                }
-                if(s[i] == '-'){
-                    sign = -1;
-                }
-                flag1 = true;
-            }
-            else if(isdigit(s[i])){
-                flag2 = true;
-                ans.push_back(s[i]);
+        if(ptr < len){
+            if(s[ptr] == '-') sign = -1;
+            if(s[ptr] == '-' || s[ptr] == '+') ptr++;
+        }
+
+        while(ptr < len){
+            if(isdigit(s[ptr])){
+                res = 10*res + (s[ptr] - '0');
+                ptr++;
             }
             else{
                 break;
             }
-            
-            i++;
         }
-        
-        ll val = 0;
-        
-        for(int i = 0; i < ans.size(); i++){
-            
-            val = 10*val + ans[i]-'0';
-            
-            if(sign == 1){
-                if(val > INT_MAX){
-                    return INT_MAX;
-                }
-            }
-            if(sign == -1){
-                if(-1*val < INT_MIN){
-                    return INT_MIN;
-                }
-            }
-        }
-        
-        return sign*val;
+
+        res = sign*res;
+        if(res < INT_MIN) return INT_MIN;
+        if(res > INT_MAX) return INT_MAX;
+        return res;
     }
 };
