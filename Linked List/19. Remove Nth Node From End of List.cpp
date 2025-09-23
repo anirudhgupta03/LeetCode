@@ -20,23 +20,17 @@ public:
         return len;
     }
     ListNode* removeNthFromEnd(ListNode* head, int n) {
-        
         int len = findLinkedListLength(head);
         int nodePos = len - n;
-
-        if(nodePos == 0){
-            return head -> next;
-        }
-
+        if(nodePos == 0) return head -> next;
         ListNode* prevNode = NULL, *currNode = head;
-
         while(nodePos){
             prevNode = currNode;
             currNode = currNode -> next;
             nodePos--;
         }
-
         prevNode -> next = currNode -> next;
+        currNode -> next = NULL;
         return head;
     }
 };
