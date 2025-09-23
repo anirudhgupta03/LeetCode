@@ -1,3 +1,60 @@
+//Method - 1
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* mergeSortedList(ListNode* ptr1, ListNode* ptr2){
+        
+        ListNode* head = new ListNode(-1);
+        ListNode* ptr = head;
+        
+        while(ptr1 && ptr2){
+            if(ptr1 -> val < ptr2 -> val){
+                ptr -> next = ptr1;
+                ptr1 = ptr1 -> next;   
+            }
+            else{
+                ptr -> next = ptr2;
+                ptr2 = ptr2 -> next;
+            }
+            ptr = ptr -> next;
+        }
+        while(ptr1){
+            ptr -> next = ptr1;
+            ptr1 = ptr1 -> next;   
+            ptr = ptr -> next;
+        }
+        while(ptr2){
+            ptr -> next = ptr2;
+            ptr2 = ptr2 -> next;
+            ptr = ptr -> next;
+        }
+        return head -> next;
+    }
+    ListNode* sortList(ListNode* head) {
+        if(head == NULL || head -> next == NULL){
+            return head;
+        }
+        ListNode* slow = head, *fast = head, *pre = NULL;
+        while(fast != NULL && fast -> next != NULL){
+            pre = slow;
+            slow = slow -> next;
+            fast = fast -> next -> next;
+        }
+        pre -> next = NULL;
+        return mergeSortedList(sortList(head), sortList(slow));
+    }
+};
+
+//Method - 2
 /**
  * Definition for singly-linked list.
  * struct ListNode {
