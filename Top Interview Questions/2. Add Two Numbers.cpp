@@ -110,3 +110,58 @@ public:
         return p3;
     }
 };
+
+//Method - 3
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    int lengthOfLinkedList(ListNode* head){
+        int len = 0;
+        ListNode* ptr = head;
+        while(ptr){
+            ptr = ptr -> next;
+            len++;
+        }
+        return len;
+    }
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        
+        if(lengthOfLinkedList(l2) > lengthOfLinkedList(l1)){
+            return addTwoNumbers(l2, l1);
+        }
+        
+        ListNode *ptr1 = l1, *ptr2 = l2, *pre = NULL;
+        
+        int carry = 0;
+        
+        while(ptr1 != NULL && ptr2 != NULL){
+            int sum = carry + ptr1 -> val + ptr2 -> val;
+            ptr1 -> val = sum % 10;
+            carry = sum/10;
+            pre = ptr1;
+            ptr1 = ptr1 -> next;
+            ptr2 = ptr2 -> next;
+        }
+
+        while(ptr1 != NULL){
+            int sum = carry + ptr1 -> val;
+            ptr1 -> val = sum % 10;
+            carry = sum/10;
+            pre = ptr1;
+            ptr1 = ptr1 -> next;
+        }
+        
+        if(carry) pre -> next = new ListNode(carry);
+        
+        return l1;
+    }
+};
