@@ -29,22 +29,21 @@ public:
         if(head == NULL || head -> next == NULL){
             return true;
         }
-        ListNode* slow = head, *fast = head, *pre = NULL;
-        do{
-            pre = slow;
+        ListNode* slow = head, *fast = head;
+        while(fast != NULL && fast -> next != NULL){
             slow = slow -> next;
             fast = fast -> next -> next;
-        }while(fast != NULL && fast -> next != NULL);
-
-        pre -> next = NULL;
+        }
         ListNode* ptr1 = reverseLinkedList(slow), *ptr2 = head;
         while(ptr1 != NULL && ptr2 != NULL){
             if(ptr1 -> val != ptr2 -> val){
+                reverseLinkedList(slow);
                 return false;
             }
             ptr1 = ptr1 -> next;
             ptr2 = ptr2 -> next;
         }
+        reverseLinkedList(slow);
         return true;
     }
 };
