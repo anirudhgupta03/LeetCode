@@ -1,4 +1,6 @@
-//Method - 1
+//Ref: https://www.youtube.com/watch?v=D2vI2DNJGd8&list=PLgUwDviBIf0rAuz8tVcM0AymmhTRsfaLU&index=10
+
+//Method - 1 (Iterative)
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -31,7 +33,7 @@ public:
     }
 };
 
-//Method - 2
+//Method - 2 (Recursive)
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -46,16 +48,12 @@ class Solution {
 public:
     ListNode* start;
     ListNode* reverseLL(ListNode* curr){
-        if(curr == NULL){
-            return NULL;
-        }
-        ListNode* nextNode = curr -> next;
-        if(nextNode == NULL){
+        if(curr == NULL || curr -> next == NULL){
             start = curr;
             return curr;
         }
+        ListNode* temp = reverseLL(curr -> next);
         curr -> next = NULL;
-        ListNode* temp = reverseLL(nextNode);
         temp -> next = curr;
         return curr;
     }
