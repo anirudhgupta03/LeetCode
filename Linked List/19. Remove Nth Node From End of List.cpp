@@ -1,3 +1,4 @@
+//Ref: https://www.youtube.com/watch?v=3kMKYQ2wNIU&list=PLgUwDviBIf0rAuz8tVcM0AymmhTRsfaLU&index=9
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -31,6 +32,7 @@ public:
         }
         prevNode -> next = currNode -> next;
         currNode -> next = NULL;
+        delete currNode;
         return head;
     }
 };
