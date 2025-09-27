@@ -65,3 +65,31 @@ public:
         return start;
     }
 };
+
+//Method - 3 (Recursive)
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseLL(ListNode* curr){
+        if(curr == NULL || curr -> next == NULL){
+            return curr;
+        }
+        ListNode* front = curr -> next;
+        ListNode* head = reverseLL(curr -> next);
+        curr -> next = NULL;
+        front -> next = curr;
+        return head;
+    }
+    ListNode* reverseList(ListNode* head) {
+        return reverseLL(head);
+    }
+};
