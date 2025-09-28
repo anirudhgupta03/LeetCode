@@ -1,3 +1,4 @@
+//Ref: https://www.youtube.com/watch?v=7LjQ57RqgEc&list=PLgUwDviBIf0rAuz8tVcM0AymmhTRsfaLU&index=14
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -16,7 +17,7 @@ public:
         }
 
         ListNode* slow = head, *fast = head;
-        while(slow != NULL && fast != NULL && fast -> next != NULL){
+        while(fast != NULL && fast -> next != NULL){
             slow = slow -> next;
             fast = fast -> next -> next;
         }   
