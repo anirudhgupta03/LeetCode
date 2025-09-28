@@ -1,3 +1,5 @@
+//Ref: https://www.youtube.com/watch?v=0DYoPz2Tpt4&list=PLgUwDviBIf0rAuz8tVcM0AymmhTRsfaLU&index=13
+//Method - 1
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -45,5 +47,39 @@ public:
         }
         
         return temp1;
+    }
+};
+
+//Method - 2
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        
+        if(headA == NULL || headB == NULL){
+            return NULL;
+        }
+
+        ListNode* ptrA = headA, *ptrB = headB;
+
+        while(ptrA != ptrB){
+
+            ptrA = ptrA -> next;
+            ptrB = ptrB -> next;
+
+            if(ptrA == ptrB) return ptrA;
+
+            if(ptrA == NULL) ptrA = headB;
+            if(ptrB == NULL) ptrB = headA;
+        }
+
+        return ptrA;
     }
 };
