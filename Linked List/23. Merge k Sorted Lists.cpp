@@ -86,3 +86,47 @@ public:
     }
 };
 
+//Method - 2
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+struct cmp{
+    bool operator()(ListNode* l1, ListNode* l2){
+        return l1 -> val > l2 -> val;
+    }
+};
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        
+        int len = lists.size();
+        if(len == 0) return NULL;
+        if(len == 1) return lists[0];
+
+        priority_queue<ListNode*, vector<ListNode*>, cmp> pq;
+
+        for(auto &x: lists){
+            if(x) pq.push(x);
+        }
+        
+        ListNode* dummy = new ListNode(-1);
+        ListNode* temp = dummy;
+
+        while(!pq.empty()){
+            ListNode* curr = pq.top();
+            pq.pop();
+            temp -> next = curr;
+            temp = temp -> next;
+            if(curr -> next) pq.push(curr -> next);
+        }
+
+        return dummy -> next;
+    }
+};
