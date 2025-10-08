@@ -1,5 +1,6 @@
+//Ref: https://www.youtube.com/watch?v=1zktEppsdig&list=PLgUwDviBIf0rAuz8tVcM0AymmhTRsfaLU&index=27
 //Method - 1
-//Time complexity : O(kN) where k is the number of linked lists.
+//Time complexity : O(k*(k + 1)*N/2) where k is the number of linked lists.
 //Space complexity : O(1)
 
 We can merge two sorted linked list in O(1)O(1) space.
@@ -126,7 +127,6 @@ public:
             temp = temp -> next;
             if(curr -> next) pq.push(curr -> next);
         }
-
         return dummy -> next;
     }
 };
