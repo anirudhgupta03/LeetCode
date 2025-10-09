@@ -1,3 +1,4 @@
+//Method - 1
 class Solution {
 public:
     
@@ -33,5 +34,23 @@ public:
         solve(count1,count2,op,n,v);
         
         return v;
+    }
+};
+
+//Method - 2
+class Solution {
+public:
+    void solve(string parentheses, int open, int close, int n, vector<string> &res){
+        if(open + close == 2*n){
+            res.push_back(parentheses);
+            return;
+        }
+        if(open < n) solve(parentheses + "(", open + 1, close, n, res);
+        if(close < open) solve(parentheses + ")", open, close + 1, n, res);
+    }
+    vector<string> generateParenthesis(int n) {
+        vector<string> res;
+        solve("", 0, 0, n, res);
+        return res;
     }
 };
