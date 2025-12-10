@@ -1,21 +1,19 @@
-//Method - 1
+//BFS
 class Solution {
 public:
-    bool dfs(int node, int color, vector<int> &vis, vector<int> &col, vector<vector<int>> &graph){
-        
-        vis[node] = 1;
-        col[node] = color;
-        
-        for(int i = 0; i < graph[node].size(); i++){
-            int child = graph[node][i];
-            if(vis[child]){
-                if(col[child] == color){
-                    return false;
+    bool bfs(int node, vector<vector<int>>& graph, vector<int> &nodeColor){
+        queue<int> q;
+        q.push(node);
+        nodeColor[node] = 0;
+        while(!q.empty()){
+            int curr = q.front();
+            q.pop();
+            for(auto &child: graph[curr]){
+                if(nodeColor[child] == -1){
+                    nodeColor[child] = 1 - nodeColor[curr];
+                    q.push(child);
                 }
-            }
-            else{
-                bool flag = dfs(child, 1 - color, vis, col, graph);
-                if(!flag){
+                else if(nodeColor[child] == nodeColor[curr]){
                     return false;
                 }
             }
@@ -23,15 +21,11 @@ public:
         return true;
     }
     bool isBipartite(vector<vector<int>>& graph) {
-        
         int n = graph.size();
-        
-        vector<int> vis(n, 0), col(n, -1);
-        
+        vector<int> nodeColor(n, -1);
         for(int i = 0; i < n; i++){
-            if(vis[i] == 0){
-                bool flag = dfs(i, 0, vis, col, graph);
-                if(!flag){
+            if(nodeColor[i] == -1){
+                if(!bfs(i, graph, nodeColor)){
                     return false;
                 }
             }
@@ -40,16 +34,13 @@ public:
     }
 };
 
-//Method - 2
+//DFS
 class Solution {
 public:
     bool check(int node, int col, vector<int> &color, vector<vector<int>> &graph){
-        
         color[node] = col;
-        
         for(int i = 0; i < graph[node].size(); i++){
             int child = graph[node][i];
-            
             if(color[child] != -1){
                 if(color[child] == color[node]){
                     return false;
@@ -63,11 +54,8 @@ public:
         return true;
     }
     bool isBipartite(vector<vector<int>>& graph) {
-        
         int n = graph.size();
-    
         vector<int> color(n, -1);
-        
         for(int i = 0; i < n; i++){
             if(color[i] == -1){
                 bool flag = check(i, 1, color, graph);
