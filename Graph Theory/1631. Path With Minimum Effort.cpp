@@ -1,3 +1,49 @@
+//Method - 1
+#define ppi pair<pair<int,int>,int>
+struct cmp{
+    bool operator()(ppi &p1, ppi &p2){
+        return p1.second > p2.second;
+    }
+};
+class Solution {
+public:
+    int dx[4] = {-1,1,0,0};
+    int dy[4] = {0,0,-1,1};
+    int minimumEffortPath(vector<vector<int>>& heights) {
+        
+        int rows = heights.size(), cols = heights[0].size();
+        
+        vector<vector<int>> minEffort(rows, vector<int>(cols, INT_MAX));
+        vector<vector<int>> vis(rows, vector<int>(cols, 0));
+        priority_queue<ppi, vector<ppi>, cmp> pq;
+
+        pq.push({{0,0}, 0});
+        minEffort[0][0] = 0;
+
+        while(!pq.empty()){
+            auto[pos,eff] = pq.top();
+            auto[x,y] = pos;
+            pq.pop();
+
+            if(vis[x][y]) continue;
+            vis[x][y] = 1;
+
+            for(int i = 0; i < 4; i++){
+                int nx = x + dx[i], ny = y + dy[i];
+                if(nx >= 0 && ny >= 0 && nx < rows && ny < cols){
+                    int effort = max(eff, abs(heights[nx][ny] - heights[x][y]));
+                    if(effort < minEffort[nx][ny]){
+                        pq.push({{nx, ny}, effort});
+                        minEffort[nx][ny] = effort;
+                    }
+                }
+            }
+        }
+        return minEffort[rows - 1][cols - 1];
+    }
+};
+
+//Method - 2
 //Dijkstra
 class Solution {
 public:
@@ -47,7 +93,7 @@ public:
     }
 };
 
-//Method - 2
+//Method - 3
 class Solution {
 public:
     #define pipii pair<int,pair<int,int>>
