@@ -65,3 +65,72 @@ public:
         return dist[dst] == INT_MAX ? -1 : dist[dst];
     }
 };
+
+//Method - 3
+//Ref: https://www.youtube.com/watch?v=HBfvhLlO_po
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        
+        vector<pair<int,int>> adj[n];
+
+        for(auto &flight: flights){
+            int source = flight[0], destination = flight[1], price = flight[2];
+            adj[source].push_back({destination, price});
+        }
+
+        vector<int> stops(n, INT_MAX);
+
+        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> pq;
+        pq.push({0, src, 0});   //dis,node,steps
+
+        while(!pq.empty()){
+            auto temp = pq.top();
+            pq.pop();
+            int dist = temp[0];
+            int node = temp[1];
+            int steps = temp[2];
+
+            if(steps > stops[node] || steps > k + 1) continue;
+            stops[node] = steps;
+            if(node == dst) return dist;
+
+            for(auto &adjPlace: adj[node]){
+                pq.push({dist + adjPlace.second, adjPlace.first, steps + 1});
+            }
+        }
+        return -1;
+    }
+};
+
+//Method - 4
+//Ref: https://www.youtube.com/watch?v=HBfvhLlO_po
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        vector<pair<int,int>> adj[n];
+        for(auto &flight: flights){
+            int source = flight[0], destination = flight[1], price = flight[2];
+            adj[source].push_back({destination, price});
+        }
+        vector<int> dist(n, INT_MAX);
+        queue<pair<int,int>> q;
+        q.push({src, 0});   //node, dis
+        int stops = 0;
+        while(!q.empty() && stops <= k){
+            int sz = q.size();
+            while(sz--){
+                auto[node, dis] = q.front();
+                q.pop();
+                for(auto &[neighbour, price]: adj[node]){
+                    if(dis + price < dist[neighbour]){
+                        dist[neighbour] = dis + price;
+                        q.push({neighbour, dist[neighbour]});
+                    }
+                }
+            }
+            stops++;
+        }
+        return dist[dst] == INT_MAX ? -1 : dist[dst];
+    }
+};
