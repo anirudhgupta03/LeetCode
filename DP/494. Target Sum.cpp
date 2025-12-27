@@ -98,3 +98,119 @@ public:
         return dp[n][s]*(1 << zeros);
     }
 };
+
+//Top-Down
+class Solution {
+public:
+    int solve(int ind, int tsum, int sum, vector<int>& nums, vector<vector<int>>& dp){
+        if(tsum == sum) return 1;
+        if(tsum > sum || ind == nums.size()) return 0;
+        if(dp[ind][tsum] != -1) return dp[ind][tsum];
+        return dp[ind][tsum] = solve(ind + 1, tsum + nums[ind], sum, nums, dp) + solve(ind + 1, tsum, sum, nums, dp);
+    }
+    int findTargetSumWays(vector<int>& nums, int target) {
+        
+        int tsum = 0, zeros = 0;
+        vector<int> vnums;
+        for(int &ele: nums){
+            tsum += ele;
+            if(ele == 0) zeros++;
+            else vnums.push_back(ele);
+        }
+		
+        if(target > tsum || (tsum - target)%2 != 0) return 0;
+        int sum = (tsum - target)/2;
+        
+        sort(vnums.begin(), vnums.end());
+        int n = vnums.size();
+
+        vector<vector<int>> dp(n, vector<int>(sum + 1, -1));
+        int ans = solve(0, 0, sum, vnums, dp);
+        ans *= pow(2, zeros);
+        return ans;
+    }
+};
+
+//Tabulation
+class Solution {
+public:
+    int findTargetSumWays(vector<int>& nums, int target) {
+        
+        int tsum = 0, zeros = 0;
+        vector<int> vnums;
+
+        for(int &ele: nums){
+            tsum += ele;
+            if(ele == 0) zeros++;
+            else vnums.push_back(ele);
+        }
+
+        sort(vnums.begin(), vnums.end());
+
+        if(target > tsum || (tsum - target)%2 != 0) return 0;
+        int sum = (tsum - target)/2;
+
+        int n = vnums.size();
+
+        vector<vector<int>> dp(n + 1, vector<int>(sum + 1, -1));
+
+        for(int ind = n; ind >= 0; ind--){
+            for(int tsum = sum; tsum >= 0; tsum--){
+                if(tsum == sum) dp[ind][tsum] = 1;
+                else if(ind == n) dp[ind][tsum] = 0;
+                else{
+                    dp[ind][tsum] = dp[ind + 1][tsum];
+                    if(tsum + vnums[ind] <= sum){
+                        dp[ind][tsum] += dp[ind + 1][tsum + vnums[ind]];
+                    }
+                }
+            }
+        }
+        int ans = dp[0][0];
+        ans *= pow(2, zeros);
+        return ans;
+    }
+};
+
+//Tabulation + Space Optimization
+class Solution {
+public:
+    int findTargetSumWays(vector<int>& nums, int target) {
+        
+        int tsum = 0, zeros = 0;
+        vector<int> vnums;
+
+        for(int &ele: nums){
+            tsum += ele;
+            if(ele == 0) zeros++;
+            else vnums.push_back(ele);
+        }
+
+        sort(vnums.begin(), vnums.end());
+
+        if(target > tsum || (tsum - target)%2 != 0) return 0;
+        int sum = (tsum - target)/2;
+
+        int n = vnums.size();
+
+        vector<int> prevDP(sum + 1, -1);
+
+        for(int ind = n; ind >= 0; ind--){
+            vector<int> currDP(sum + 1, -1);
+            for(int tsum = sum; tsum >= 0; tsum--){
+                if(tsum == sum) currDP[tsum] = 1;
+                else if(ind == n) currDP[tsum] = 0;
+                else{
+                    currDP[tsum] = prevDP[tsum];
+                    if(tsum + vnums[ind] <= sum){
+                        currDP[tsum] += prevDP[tsum + vnums[ind]];
+                    }
+                }
+            }
+            prevDP = currDP;
+        }
+        int ans = prevDP[0];
+        ans *= pow(2, zeros);
+        return ans;
+    }
+};
