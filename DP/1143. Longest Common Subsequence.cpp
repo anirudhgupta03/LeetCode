@@ -1,6 +1,6 @@
 //Top-Down
 //TC: O(len1*len2)
-//SC: O(len1*len2) + Auxilliary Stack Space
+//SC: O(len1*len2) + Auxilliary Stack Space O(len1 + len2)
 class Solution {
 public:
     int solve(int ind1, int ind2, string &text1, string &text2, vector<vector<int>> &dp){
