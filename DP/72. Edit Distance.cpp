@@ -1,6 +1,6 @@
 //Top-Down
 //TC: O(len1*len2)
-//SC: O(len1*len2) + Auxilliary Stack Space
+//SC: O(len1*len2) + Auxilliary Stack Space O(len1 + len2)
 class Solution {
 public:
     int solve(int i, int j, string &word1, string &word2, vector<vector<int>> &dp){
@@ -30,6 +30,7 @@ public:
 };
 
 //Bottom-Up
+//Tabulation
 //TC: O(len1*len2)
 //SC: O(len1*len2)
 class Solution {
@@ -42,7 +43,6 @@ public:
         
         for(int i = 0; i <= l1; i++){
             for(int j = 0; j <= l2; j++){
-                
                 if(i == 0){
                     dp[i][j] = j;
                 }
@@ -63,6 +63,7 @@ public:
 };
 
 //Bottom-Up
+//Tabulation + Space Optimization
 //TC: O(len1*len2)
 //SC: O(len2)
 class Solution {
