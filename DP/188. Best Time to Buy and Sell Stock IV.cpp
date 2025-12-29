@@ -90,6 +90,37 @@ public:
     }
 };
 
+//Another Top-Down Approach
+//TC: O(n*2*k)
+//SC: O(n*2*k) + Auxilliary Stack Space
+class Solution {
+public:
+    int findMaxProfit(int ind, int txns, int k, vector<int> &prices, vector<vector<int>> &dp){
+        if(ind == prices.size() || txns == 2*k){
+            return 0;
+        }
+        if(dp[ind][txns] != -1){
+            return dp[ind][txns];
+        }
+        if(txns % 2 == 0){
+            int buy = findMaxProfit(ind + 1, txns + 1, k, prices, dp) - prices[ind];
+            int notBuy = findMaxProfit(ind + 1, txns, k, prices, dp);
+            return dp[ind][txns] = max(buy, notBuy);
+        }
+        else{
+            int sell = findMaxProfit(ind + 1, txns + 1, k, prices, dp) + prices[ind];
+            int notSell = findMaxProfit(ind + 1, txns, k, prices, dp);
+            return dp[ind][txns] = max(sell, notSell);
+        }
+        return dp[ind][txns] = 0;
+    }
+    int maxProfit(int k, vector<int>& prices) {
+        int n = prices.size();
+        vector<vector<int>> dp(n, vector<int>(2*k, -1));
+        return findMaxProfit(0, 0, k, prices, dp);
+    }
+};
+
 //Approach - 1
 class Solution {
 public:
