@@ -88,6 +88,36 @@ public:
     }
 };
 
+//Another Top-Down
+//TC: O(n*2*2)
+//SC: O(n*4) + Auxilliary Stack Space
+class Solution {
+public:
+    int findMaxProfit(int ind, int txns, vector<int> &prices, vector<vector<int>> &dp){
+        if(ind == prices.size() || txns == 4){
+            return 0;
+        }
+        if(dp[ind][txns] != -1){
+            return dp[ind][txns];
+        }
+        if(txns % 2 == 0){
+            int buy = findMaxProfit(ind + 1, txns + 1, prices, dp) - prices[ind];
+            int notBuy = findMaxProfit(ind + 1, txns, prices, dp);
+            return dp[ind][txns] = max(buy, notBuy);
+        }
+        else{
+            int sell = findMaxProfit(ind + 1, txns + 1, prices, dp) + prices[ind];
+            int notSell = findMaxProfit(ind + 1, txns, prices, dp);
+            return dp[ind][txns] = max(sell, notSell);
+        }
+    }
+    int maxProfit(vector<int>& prices) {
+        int n = prices.size();
+        vector<vector<int>> dp(n, vector<int>(5, -1));
+        return findMaxProfit(0, 0, prices, dp);
+    }
+};
+
 //Intuitive
 //TC: O(n)
 //SC: O(1)
