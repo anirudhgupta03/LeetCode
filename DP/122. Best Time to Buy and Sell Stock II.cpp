@@ -3,54 +3,53 @@
 //SC: O(n*2) + Auxilliary Stack Space
 class Solution {
 public:
-    int solve(int ind, int flag, vector<int> &prices, vector<vector<int>> &dp){
+    int findMaxProfit(int ind, bool flag, vector<int>& prices, vector<vector<int>>& dp){
         
-        if(ind == prices.size()){
-            return 0;
-        }
-    
-        if(dp[ind][flag] != -1){
-            return dp[ind][flag];
-        }
+        if(ind == prices.size()) return 0;
+        
+        if(dp[ind][flag] != -1) return dp[ind][flag];
+        
         if(flag){
-            return dp[ind][flag] = max(solve(ind + 1, 0, prices, dp) - prices[ind], solve(ind + 1, 1, prices, dp));
+            int buy = findMaxProfit(ind + 1, 0, prices, dp) - prices[ind];
+            int notBuy = findMaxProfit(ind + 1, 1, prices, dp);
+            return dp[ind][flag] = max(buy, notBuy);
         }
         else{
-            return dp[ind][flag] = max(solve(ind + 1, 1, prices, dp) + prices[ind], solve(ind + 1, 0, prices, dp));
+            int sell = findMaxProfit(ind + 1, 1, prices, dp) + prices[ind];
+            int notSell = findMaxProfit(ind + 1, 0, prices, dp);
+            return dp[ind][flag] = max(sell, notSell);
         }
     }
     int maxProfit(vector<int>& prices) {
-        
         int n = prices.size();
-        
         vector<vector<int>> dp(n, vector<int>(2, -1));
-        
-        return solve(0, 1, prices, dp);
+        return findMaxProfit(0, 1, prices, dp);
     }
 };
 
 //Bottom-Up
+//Tabulation
 //TC: O(n*2)
 //SC: O(n*2)
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
-        
         int n = prices.size();
-        
-        vector<vector<int>> dp(n + 1, vector<int>(2));
-        
+        vector<vector<int>> dp(n + 1, vector<int>(2, -1));
         for(int ind = n; ind >= 0; ind--){
-            for(int flag = 1; flag >= 0; flag--){
-                
+            for(int flag = 0; flag <= 1; flag++){
                 if(ind == n){
                     dp[ind][flag] = 0;
                 }
                 else if(flag){
-                    dp[ind][flag] = max(dp[ind + 1][0] - prices[ind], dp[ind + 1][1]);
+                    int buy = dp[ind + 1][0] - prices[ind];
+                    int notBuy = dp[ind + 1][1];
+                    dp[ind][flag] = max(buy, notBuy);
                 }
                 else{
-                    dp[ind][flag] = max(dp[ind + 1][1] + prices[ind], dp[ind + 1][0]);
+                    int sell = dp[ind + 1][1] + prices[ind];
+                    int notSell = dp[ind + 1][0];
+                    dp[ind][flag] = max(sell, notSell);
                 }
             }
         }
@@ -59,6 +58,7 @@ public:
 };
 
 //Bottom-Up
+//Tabulation + Space Optimization
 //TC: O(n*2)
 //SC: O(1)
 class Solution {
