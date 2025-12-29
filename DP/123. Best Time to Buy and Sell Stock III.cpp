@@ -113,7 +113,7 @@ public:
     }
     int maxProfit(vector<int>& prices) {
         int n = prices.size();
-        vector<vector<int>> dp(n, vector<int>(5, -1));
+        vector<vector<int>> dp(n, vector<int>(4, -1));
         return findMaxProfit(0, 0, prices, dp);
     }
 };
