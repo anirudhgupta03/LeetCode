@@ -19,6 +19,7 @@ public:
             int notSell = findMaxProfit(ind + 1, 0, prices, dp);
             return dp[ind][flag] = max(sell, notSell);
         }
+        
     }
     int maxProfit(vector<int>& prices) {
         int n = prices.size();
@@ -34,8 +35,11 @@ public:
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
+        
         int n = prices.size();
+        
         vector<vector<int>> dp(n + 1, vector<int>(2, -1));
+        
         for(int ind = n; ind >= 0; ind--){
             for(int flag = 0; flag <= 1; flag++){
                 if(ind == n){
@@ -53,6 +57,7 @@ public:
                 }
             }
         }
+        
         return dp[0][1];
     }
 };
