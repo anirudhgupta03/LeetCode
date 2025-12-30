@@ -1,4 +1,5 @@
 //Method without altering the original array
+//This works for Longest Divisible Subsequence as I am preserving the order
 class Solution {
 public:
     vector<int> largestDivisibleSubset(vector<int>& nums) {
