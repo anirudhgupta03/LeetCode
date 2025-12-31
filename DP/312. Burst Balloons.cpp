@@ -42,6 +42,38 @@ public:
     }
 };
 
+//Top-Down
+//TC: O(n*n*n)
+//SC: O(n*n) + Auxilliary Stack Space
+class Solution {
+public:
+    int findMaxCoins(int i, int j, vector<int>& nums, vector<vector<int>> &dp){
+       
+        if(i > j) return 0;
+        if(dp[i][j] != -1) return dp[i][j];
+        
+        int maxCoins = INT_MIN;
+        
+        for(int k = i; k <= j; k++){
+            int left = (i - 1 >= 0) ? nums[i - 1] : 1;
+            int right = (j + 1 < nums.size()) ? nums[j + 1] : 1;
+            
+            int leftR = findMaxCoins(i, k - 1, nums, dp);
+            int rightR = findMaxCoins(k + 1, j, nums, dp);
+            
+            if(leftR != INT_MIN && rightR != INT_MIN){
+                maxCoins = max(maxCoins, left*nums[k]*right + leftR + rightR);
+            }
+        }
+        return dp[i][j] = maxCoins;
+    }
+    int maxCoins(vector<int>& nums) {
+        int n = nums.size();
+        vector<vector<int>> dp(n, vector<int>(n, -1));
+        return findMaxCoins(0, n - 1, nums, dp);
+    }
+};
+
 //Bottom-Up
 //TC: O(n*n*n)
 //SC: O(n*n)
