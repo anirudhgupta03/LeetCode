@@ -1,3 +1,4 @@
+//Method - 1
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -36,5 +37,52 @@ public:
             st2.pop();
         }
         return res;
+    }
+};
+
+//Method - 2
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode* root) {
+        vector<int> postorder;
+        if(root == NULL) return postorder;
+        stack<TreeNode*> st;
+
+        while(root){
+            st.push(root);
+            root = root -> left;
+        }
+
+        while(!st.empty()){
+            TreeNode* curr = st.top();
+            if(curr -> right == NULL){
+                st.pop();
+                postorder.push_back(curr -> val);
+                while(!st.empty() && curr == st.top() -> right){
+                    curr = st.top();
+                    st.pop();
+                    postorder.push_back(curr -> val);
+                }
+            }
+            else{
+                curr = curr -> right;
+                while(curr){
+                    st.push(curr);
+                    curr = curr -> left;
+                }
+            }
+        }
+        return postorder;
     }
 };
