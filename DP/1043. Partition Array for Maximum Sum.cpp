@@ -30,12 +30,11 @@ public:
     int maxSumAfterPartitioning(vector<int>& arr, int k) {
         int n = arr.size();
         vector<int> dp(n, 0);
-
         for(int i = n - 1; i >= 0; i--){
             int maxSum = 0, maxVal = 0;
             for(int j = i; j < min(i + k, n); j++){
                 maxVal = max(maxVal, arr[j]);
-                maxSum = max(maxSum, findMaxSumAfterPartitioning(j + 1, k, arr, dp) + (j - i + 1)*maxVal);
+                maxSum = max(maxSum, dp[j + 1] + (j - i + 1)*maxVal);
             }
             dp[i] = maxSum;
         }
