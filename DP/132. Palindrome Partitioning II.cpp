@@ -1,4 +1,5 @@
 //Method - 1
+//Top-Down
 class Solution {
 public:
     bool isPalindrome(string &s){
@@ -37,6 +38,7 @@ public:
 };
 
 //Method - 2
+//Top-Down
 //Optimal Approach
 class Solution {
 public:
@@ -84,5 +86,45 @@ public:
         }
         vector<int> dp(len, -1);
         return solve(0, s, isPalindrome, dp);
+    }
+};
+
+//Method - 3
+//Bottom-Up
+//TC: O(N*N)
+//SC: O(N*N)
+class Solution {
+public:
+    int minCut(string s) {
+        int len = s.length();
+
+        vector<vector<bool>> isPalindrome(len, vector<bool>(len, false));
+
+        for(int i = 0; i < len; i++){
+            isPalindrome[i][i] = true;
+            if(i < len - 1 && s[i] == s[i + 1]){
+                isPalindrome[i][i + 1] = true;
+            }
+        }
+
+        for(int i = len - 3; i >= 0; i--){
+            for(int j = i + 2; j < len; j++){
+                if(s[i] == s[j] && isPalindrome[i + 1][j - 1]){
+                    isPalindrome[i][j] = true;
+                }
+            }
+        }
+        
+        vector<int> dp(len + 1, -1);
+        for(int i = len - 1; i >= 0; i--){
+            int minCuts = INT_MAX;
+            for(int k = i; k <= len - 1; k++){
+                if(isPalindrome[i][k]){
+                    minCuts = min(minCuts, 1 + dp[k + 1]);
+                }
+            }
+            dp[i] = minCuts;
+        }
+        return dp[0];
     }
 };
